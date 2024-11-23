@@ -14,18 +14,21 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
+            background: url('download.jpg') no-repeat center center/cover;
             overflow: hidden;
         }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: rgba(0, 0, 0, 0.4); /* Adds a slight overlay for better text visibility */
+            padding: 20px;
+            border-radius: 20px;
         }
         h1 {
             font-size: 4em;
             color: white;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
             z-index: 10;
         }
@@ -46,55 +49,6 @@
         .button:hover {
             background: #ff324b;
         }
-
-        /* Balloon Animation */
-        .balloon {
-            position: absolute;
-            width: 50px;
-            height: 80px;
-            background: radial-gradient(circle at 50% 50%, #ffcccb, #ff5e78);
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            animation: float 6s ease-in-out infinite;
-        }
-        .balloon::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 20px;
-            background: white;
-        }
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0);
-            }
-            50% {
-                transform: translateY(-50px) rotate(5deg);
-            }
-        }
-
-        /* Confetti Animation */
-        .confetti {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #ff5e78;
-            border-radius: 50%;
-            animation: fall 3s linear infinite;
-        }
-        @keyframes fall {
-            0% {
-                opacity: 1;
-                transform: translateY(-10vh) translateX(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) translateX(20px);
-            }
-        }
     </style>
 </head>
 <body>
@@ -103,44 +57,5 @@
         <button class="button" onclick="location.href='surprise.html'">Click for Surprise</button>
         <button class="button" onclick="location.href='moments.html'">Our Moments</button>
     </div>
-
-    <!-- Animations -->
-    <div id="animations"></div>
-
-    <script>
-        // Create Balloons
-        function createBalloons(count) {
-            for (let i = 0; i < count; i++) {
-                const balloon = document.createElement('div');
-                balloon.classList.add('balloon');
-                balloon.style.left = Math.random() * 100 + 'vw';
-                balloon.style.animationDelay = Math.random() * 3 + 's';
-                balloon.style.background = `radial-gradient(circle at 50% 50%, hsl(${Math.random() * 360}, 80%, 70%), hsl(${Math.random() * 360}, 60%, 50%))`;
-                document.body.appendChild(balloon);
-
-                // Remove after animation
-                setTimeout(() => document.body.removeChild(balloon), 6000);
-            }
-        }
-
-        // Create Confetti
-        function createConfetti(count) {
-            for (let i = 0; i < count; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confetti.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
-                document.body.appendChild(confetti);
-
-                // Remove after animation
-                setTimeout(() => document.body.removeChild(confetti), 3000);
-            }
-        }
-
-        // Initialize Animations
-        setInterval(() => createBalloons(3), 2000);
-        setInterval(() => createConfetti(20), 500);
-    </script>
 </body>
 </html>
