@@ -3,103 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise!</title>
+    <title>Happy Birthday!</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
-            height: 100vh;
+            background: linear-gradient(45deg, #8e44ad, #3498db);
+            color: white;
+            text-align: center;
             overflow: hidden;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            flex-direction: column;
         }
         h1 {
-            font-size: 3em;
-            color: white;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-            margin-bottom: 20px;
+            font-size: 4em;
+            margin: 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
-        p {
-            font-size: 1.5em;
-            color: white;
-            margin-bottom: 30px;
+        h2 {
+            font-size: 2em;
+            margin: 10px 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
-
-        /* Flower Animation */
-        .flower {
-            position: absolute;
-            width: 100px;
-            height: auto;
-            animation: float 5s infinite ease-in-out;
-            opacity: 0.8;
+        img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
-        .flower:nth-child(1) {
-            top: 10%;
-            left: 15%;
-            animation-delay: 0s;
-        }
-        .flower:nth-child(2) {
-            top: 20%;
-            left: 70%;
-            animation-delay: 1s;
-        }
-        .flower:nth-child(3) {
-            top: 50%;
-            left: 40%;
-            animation-delay: 2s;
-        }
-        .flower:nth-child(4) {
-            top: 80%;
-            left: 10%;
-            animation-delay: 3s;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.8;
-            }
-            50% {
-                transform: translateY(-30px) rotate(15deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.8;
-            }
-        }
-
-        .button {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            color: white;
+        .back-button {
+            margin-top: 30px;
+            padding: 10px 20px;
             background: #ff5e78;
+            color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-size: 1.2em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
-            z-index: 10;
+            transition: background 0.3s;
         }
-        .button:hover {
+        .back-button:hover {
             background: #ff324b;
+        }
+
+        /* Fireworks Animation */
+        .firework {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: firework 2.5s ease-out infinite;
+        }
+        @keyframes firework {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(0.5);
+            }
+        }
+
+        /* Falling Flowers */
+        .flower {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('flower.png') no-repeat center/cover;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Happy Birthday, My Love! 🎉💖</h1>
-    <p>You are the most beautiful flower in my garden of life. 🌸</p>
-    <button class="button" onclick="location.href='moments.html'">Our Moments</button>
+    <h1>Happy Birthday, My Love! 🎉</h1>
+    <h2>"You are my today and all of my tomorrows. I love you endlessly!"</h2>
+    <img src="https://www.dropbox.com/scl/fi/fjsmy4fvt8s1ayk5tmgxv/418626564_950559573127860_2429917605233752261_n.jpg?rlkey=zjy27c31pjn0p6hbrq4i5a81l&st=fht9ghb3&raw=1" alt="Urs">
+    <button class="back-button" onclick="location.href='index.html'">Back to Home</button>
 
-    <!-- Flower Animations -->
-    <img src="https://www.dropbox.com/scl/fi/ae4y9bo6crtx4uvbr1y59/Pngtree-beautiful-natural-red-rose-flowers_9002652.png?rlkey=mw2c3p038pu8r1k3eni815a7i&st=bdphdwnw&raw=1" alt="Flower" class="flower">
-    <img src="https://www.dropbox.com/scl/fi/ae4y9bo6crtx4uvbr1y59/Pngtree-beautiful-natural-red-rose-flowers_9002652.png?rlkey=mw2c3p038pu8r1k3eni815a7i&st=bdphdwnw&raw=1" alt="Flower" class="flower">
-    <img src="https://www.dropbox.com/scl/fi/ae4y9bo6crtx4uvbr1y59/Pngtree-beautiful-natural-red-rose-flowers_9002652.png?rlkey=mw2c3p038pu8r1k3eni815a7i&st=bdphdwnw&raw=1" alt="Flower" class="flower">
-    <img src="https://www.dropbox.com/scl/fi/ae4y9bo6crtx4uvbr1y59/Pngtree-beautiful-natural-red-rose-flowers_9002652.png?rlkey=mw2c3p038pu8r1k3eni815a7i&st=bdphdwnw&raw=1" alt="Flower" class="flower">
+    <!-- Animations -->
+    <div id="animations"></div>
+
+    <script>
+        // Firework and Flower Animations
+        function createEffect(type, count) {
+            for (let i = 0; i < count; i++) {
+                const effect = document.createElement('div');
+                effect.classList.add(type);
+                effect.style.left = Math.random() * 100 + 'vw';
+                effect.style.animationDuration = Math.random() * 2 + 2 + 's';
+                document.body.appendChild(effect);
+
+                // Remove element after animation ends
+                effect.addEventListener('animationend', () => {
+                    document.body.removeChild(effect);
+                });
+            }
+        }
+
+        // Initialize animations
+        setInterval(() => createEffect('firework', 10), 1000);
+        setInterval(() => createEffect('flower', 5), 1500);
+    </script>
 </body>
 </html>
