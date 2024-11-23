@@ -3,126 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Surprise!</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #8e44ad, #3498db);
-            color: white;
-            text-align: center;
-            overflow: hidden;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
             height: 100vh;
+            overflow: hidden;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            text-align: center;
+            position: relative;
         }
         h1 {
-            font-size: 4em;
-            margin: 0;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-        }
-        h2 {
-            font-size: 2em;
-            margin: 10px 0;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        img {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 5px solid white;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-        .back-button {
-            margin-top: 30px;
-            padding: 10px 20px;
-            background: #ff5e78;
+            font-size: 3em;
             color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        /* Button styling */
+        .button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background: #ff5e78;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s;
+            transition: 0.3s;
+            z-index: 10;
         }
-        .back-button:hover {
+        .button:hover {
             background: #ff324b;
         }
 
-        /* Fireworks Animation */
-        .firework {
+        /* Snowfall Animation */
+        .snowflake {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: white;
+            top: -10px;
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            animation: firework 2.5s ease-out infinite;
+            animation: fall linear infinite;
         }
-        @keyframes firework {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) scale(0.5);
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
             }
         }
 
-        /* Falling Flowers */
-        .flower {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: url('flower.png') no-repeat center/cover;
-            animation: fall 5s linear infinite;
+        /* Snowflake generation */
+        .snowflake:nth-child(odd) {
+            animation-duration: 6s;
+            animation-delay: 0s;
         }
-        @keyframes fall {
-            0% {
-                transform: translateY(-100%);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
+
+        .snowflake:nth-child(even) {
+            animation-duration: 8s;
+            animation-delay: 2s;
+        }
+
+        .snowflake:nth-child(3) {
+            animation-duration: 7s;
+            animation-delay: 1s;
+        }
+
+        /* Love Quotes Section */
+        .quotes {
+            font-style: italic;
+            color: white;
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+
+        /* Love Letter Section */
+        .letter {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .letter h2 {
+            font-size: 2em;
+            color: #ff324b;
+            margin-bottom: 20px;
+        }
+
+        .letter p {
+            font-size: 1.2em;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>Happy Birthday, My Love! 🎉</h1>
-    <h2>"You are my today and all of my tomorrows. I love you endlessly!"</h2>
-    <img src="https://www.dropbox.com/scl/fi/hdwtblhwuwcgqyhmupi08/bruhh.jpg?rlkey=vop8c2vhs9u3y4id2q0dzozc1&st=7tkm7k68&raw=1" alt="Urs">
-    <button class="back-button" onclick="location.href='index.html'">Back to Home</button>
+    <h1>Happy Birthday, My Love! 🎉💖</h1>
+    <p>You are the most beautiful flower in my garden of life. 🌸</p>
 
-    <!-- Animations -->
-    <div id="animations"></div>
+    <!-- Button to Moments Page -->
+    <button class="button" onclick="location.href='moments.html'">Our Moments</button>
+
+    <!-- Snowfall Animation -->
+    <div id="snowflakes"></div>
+
+    <!-- Love Quotes Section -->
+    <div class="quotes">
+        <p>"I have waited for this moment for so long, and now that it's here, I can't imagine a life without you. You are my forever." 💕</p>
+        <p>"Every time I see you, I fall in love with you all over again. Happy Birthday, my love!" 💖</p>
+    </div>
+
+    <!-- Love Letter Section -->
+    <div class="letter">
+        <h2>My Dearest [Her Name],</h2>
+        <p>From the moment we met, I knew my life was about to change forever. You brought light into my world and made everything so much better just by being yourself. Your smile, your laughter, the way you care for me – they are the things that fill my heart with joy each day.</p>
+        <p>On this special day, I just want to remind you how much I love you. You mean everything to me, and I can't wait to create many more memories with you. Today is not just a celebration of your birth but a celebration of how you have touched my life in the most incredible way.</p>
+        <p>Happy Birthday, my love. I will always cherish you and our moments together.</p>
+        <p>Yours forever, <br> [Your Name]</p>
+    </div>
 
     <script>
-        // Firework and Flower Animations
-        function createEffect(type, count) {
-            for (let i = 0; i < count; i++) {
-                const effect = document.createElement('div');
-                effect.classList.add(type);
-                effect.style.left = Math.random() * 100 + 'vw';
-                effect.style.animationDuration = Math.random() * 2 + 2 + 's';
-                document.body.appendChild(effect);
-
-                // Remove element after animation ends
-                effect.addEventListener('animationend', () => {
-                    document.body.removeChild(effect);
-                });
+        // Snowfall Effect
+        function createSnowflakes() {
+            for (let i = 0; i < 50; i++) {
+                let snowflake = document.createElement("div");
+                snowflake.classList.add("snowflake");
+                snowflake.style.left = Math.random() * 100 + "vw"; // Random horizontal position
+                snowflake.style.animationDuration = Math.random() * 5 + 5 + "s"; // Random speed
+                snowflake.style.animationDelay = Math.random() * 5 + "s"; // Random delay
+                document.getElementById("snowflakes").appendChild(snowflake);
             }
         }
 
-        // Initialize animations
-        setInterval(() => createEffect('firework', 10), 1000);
-        setInterval(() => createEffect('flower', 5), 1500);
+        // Initiate Snowfall
+        createSnowflakes();
     </script>
 </body>
 </html>
