@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,23 +10,31 @@
             margin: 0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            background: url('https://www.dropbox.com/scl/fi/nzvommve8pz4ks8l6wbmf/pexels-pixabay-355887.jpg?rlkey=picgqg4mpusga1ohgu032el4j&st=6pmt6s9h&raw=1') no-repeat center center/cover; /* Space background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
+            overflow: hidden;  /* Prevent vertical scroll */
+        }
+
+        /* Starry Night Sky Background */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat; /* Background with stars */
+            background-size: cover;
+            z-index: -1;  /* Ensure background is behind gallery */
         }
 
         /* Container for the Polaroid Gallery */
         .gallery-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 30px;
             padding: 50px;
-            max-width: 90%;
-            overflow: hidden;
+            overflow-x: scroll;
+            width: 100%;
+            height: 100vh;
+            position: relative;
         }
 
         /* Polaroid Photo Styling */
@@ -67,9 +74,13 @@
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
+
     </style>
 </head>
 <body>
+
+    <!-- Background with stars -->
+    <div class="background"></div>
 
     <!-- Gallery Container -->
     <div class="gallery-container">
