@@ -13,14 +13,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: linear-gradient(to bottom, #8b4513, #4e260b);
-            overflow: hidden;
-            color: white;
+            background: #e6ffe6;
+            color: #333;
+            overflow-x: hidden;
         }
 
         h1 {
             margin-top: 20px;
             font-size: 3rem;
+            color: #005f00;
         }
 
         .gallery-container {
@@ -30,7 +31,7 @@
             max-width: 1200px;
             margin: 20px auto;
             justify-content: center;
-            z-index: 2; /* Keep above chocolates */
+            z-index: 2;
         }
 
         .gallery-item {
@@ -73,7 +74,7 @@
 
         .modal-content {
             position: relative;
-            background: #fff;
+            background: white;
             padding: 20px;
             border-radius: 10px;
             max-width: 80%;
@@ -98,31 +99,28 @@
 
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: -20px;
+            right: -20px;
             font-size: 1.5em;
-            background-color: transparent;
+            background-color: black;
+            color: white;
             border: none;
+            border-radius: 50%;
             cursor: pointer;
+            padding: 5px 10px;
+            z-index: 15;
         }
 
         .close-btn:hover {
-            color: red;
+            background-color: red;
         }
 
-        /* Blur Effect */
-        .blur {
-            filter: blur(8px);
-            pointer-events: none;
-        }
-
-        /* Falling Chocolates Animation */
-        .chocolate {
+        /* Falling Leaves Animation */
+        .leaf {
             position: absolute;
-            width: 20px;
+            width: 40px;
             height: 40px;
-            background: #4e260b;
-            border-radius: 5px;
+            background: url('https://via.placeholder.com/40x40?text=Leaf') no-repeat center/contain;
             animation: fall linear infinite;
             z-index: 1;
         }
@@ -135,12 +133,17 @@
                 transform: translateY(100vh);
             }
         }
+
+        /* Add Scrolling */
+        .scrollable {
+            overflow-y: scroll;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Our Sweetest Memories</h1>
-    <div class="gallery-container" id="galleryContainer">
+    <h1>Our Jungle Memories</h1>
+    <div class="gallery-container scrollable" id="galleryContainer">
         <!-- Images are dynamically added using JavaScript -->
     </div>
 
@@ -156,10 +159,11 @@
     <script>
         // List of images and their descriptions
         const images = [
-            { src: 'https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1', desc: 'This is a special memory #1' },
-            { src: 'https://via.placeholder.com/300x400?text=Image2', desc: 'This is a special memory #2' },
-            { src: 'https://via.placeholder.com/300x400?text=Image3', desc: 'This is a special memory #3' },
-            // Add more image URLs and descriptions (30 in total)
+            { src: 'https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1', desc: 'Memory #1 description' },
+            { src: 'https://via.placeholder.com/300x400?text=Image2', desc: 'Memory #2 description' },
+            { src: 'https://via.placeholder.com/300x400?text=Image3', desc: 'Memory #3 description' },
+            { src: 'https://via.placeholder.com/300x400?text=Image4', desc: 'Memory #4 description' },
+            // Add all 30 images here
         ];
 
         // Dynamically populate the gallery
@@ -190,24 +194,33 @@
             galleryContainer.classList.remove('blur'); // Remove blur effect
         }
 
-        // Falling Chocolates Animation
-        function createChocolate() {
-            const chocolate = document.createElement('div');
-            chocolate.classList.add('chocolate');
-            chocolate.style.left = Math.random() * 100 + "vw";
-            chocolate.style.animationDuration = Math.random() * 3 + 2 + "s";
-            document.body.appendChild(chocolate);
+        // Falling Leaves Animation
+        const leafUrls = [
+            'https://via.placeholder.com/40x40?text=Leaf1',
+            'https://via.placeholder.com/40x40?text=Leaf2',
+            'https://via.placeholder.com/40x40?text=Leaf3'
+        ];
 
-            // Remove chocolate after animation ends
-            chocolate.addEventListener('animationend', () => {
-                chocolate.remove();
+        function createLeaf() {
+            const leaf = document.createElement('div');
+            const randomLeaf = leafUrls[Math.floor(Math.random() * leafUrls.length)];
+            leaf.classList.add('leaf');
+            leaf.style.left = Math.random() * 100 + "vw";
+            leaf.style.animationDuration = Math.random() * 3 + 2 + "s";
+            leaf.style.backgroundImage = `url(${randomLeaf})`;
+            document.body.appendChild(leaf);
+
+            // Remove leaf after animation ends
+            leaf.addEventListener('animationend', () => {
+                leaf.remove();
             });
         }
 
-        // Generate chocolates continuously
-        setInterval(createChocolate, 200);
+        // Generate leaves continuously
+        setInterval(createLeaf, 200);
     </script>
 
 </body>
 </html>
+
 
