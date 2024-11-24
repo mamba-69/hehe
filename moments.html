@@ -8,6 +8,7 @@
         /* General Page Styling */
         body {
      /* General Page Styling */
+/* General Page Styling */
 body {
     margin: 0;
     padding: 0;
@@ -56,8 +57,8 @@ body {
 .collage {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    max-width: 90%;
+    grid-gap: 10px;
+    max-width: 100%;
     margin: 20px auto;
     padding: 10px;
     box-sizing: border-box;
@@ -65,7 +66,8 @@ body {
 
 .collage img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover; /* Ensures the images cover the grid area without distortion */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
