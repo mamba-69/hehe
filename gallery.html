@@ -3,134 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gift Box Reveal</title>
+    <title>Surprise Gift Boxes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amsterline&display=swap" rel="stylesheet">
     <style>
-        /* General Body and Page Styling */
         body {
+            font-family: 'Amsterline', cursive;
             margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #111;
+            min-height: 100vh;
+            background: url('https://www.dropbox.com/scl/fi/nzvommve8pz4ks8l6wbmf/pexels-pixabay-355887.jpg?rlkey=picgqg4mpusga1ohgu032el4j&st=6pmt6s9h&raw=1') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Gift Box Styling */
+        .box-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+            justify-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
         .gift-box {
             width: 100px;
             height: 100px;
-            background-color: #f1c40f;
+            background-color: #f7c4c4;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+            border: 2px solid #c29c9c;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
         }
 
-        /* Hover Effect on Gift Box */
-        .gift-box:hover {
-            transform: scale(1.1);
+        .gift-box img {
+            max-width: 100%;
+            max-height: 100%;
         }
 
-        /* Gift Box Animation */
-        .gift-box.opened {
-            transform: scale(0);
-            opacity: 0;
+        .message {
+            position: absolute;
+            top: -20px;
+            font-size: 1.2em;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            width: 100%;
         }
 
-        /* The Background Overlay for Blur */
-        .overlay {
+        .image-modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: flex;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
             justify-content: center;
             align-items: center;
         }
 
-        /* Showing the Overlay */
-        .overlay.show {
-            visibility: visible;
-            opacity: 1;
+        .image-modal.active {
+            display: flex;
         }
 
-        /* Full Image Styling */
-        .full-image {
-            width: 60%;
-            max-width: 700px;
+        .image-modal img {
+            max-width: 80%;
             max-height: 80%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
+            border-radius: 10px;
         }
 
-        /* Close Button Styling */
         .close-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #ff4757;
+            font-size: 1.5em;
+            background-color: transparent;
             border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
             color: white;
-            font-size: 20px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .close-btn:hover {
-            background-color: #ff6b81;
+            color: red;
         }
 
+        .blur-background {
+            filter: blur(5px);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Gift Box that Will Be Clicked to Reveal Image -->
-    <div class="gift-box" id="giftBox">
-        <span>🎁</span> <!-- You can add an icon or text here -->
-    </div>
-
-    <!-- Overlay and Full Image -->
-    <div class="overlay" id="overlay">
-        <div>
-            <img src="https://via.placeholder.com/700x500" alt="Full Image" class="full-image" id="fullImage">
-            <button class="close-btn" id="closeBtn">X</button>
+    <div class="box-container">
+        <!-- Box 1 -->
+        <div class="gift-box" onclick="openGiftBox(1)">
+            <div class="message">This is what you get!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 1">
+        </div>
+        <!-- Box 2 -->
+        <div class="gift-box" onclick="openGiftBox(2)">
+            <div class="message">Wow, you got this!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 2">
+        </div>
+        <!-- Box 3 -->
+        <div class="gift-box" onclick="openGiftBox(3)">
+            <div class="message">Surprise coming your way!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 3">
+        </div>
+        <!-- Box 4 -->
+        <div class="gift-box" onclick="openGiftBox(4)">
+            <div class="message">Lucky you!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 4">
+        </div>
+        <!-- Box 5 -->
+        <div class="gift-box" onclick="openGiftBox(5)">
+            <div class="message">You've unlocked this!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 5">
+        </div>
+        <!-- Box 6 -->
+        <div class="gift-box" onclick="openGiftBox(6)">
+            <div class="message">Here's your surprise!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 6">
+        </div>
+        <!-- Box 7 -->
+        <div class="gift-box" onclick="openGiftBox(7)">
+            <div class="message">Can you guess what's inside?</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 7">
+        </div>
+        <!-- Box 8 -->
+        <div class="gift-box" onclick="openGiftBox(8)">
+            <div class="message">A gift for you!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 8">
+        </div>
+        <!-- Box 9 -->
+        <div class="gift-box" onclick="openGiftBox(9)">
+            <div class="message">The magic begins!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 9">
+        </div>
+        <!-- Box 10 -->
+        <div class="gift-box" onclick="openGiftBox(10)">
+            <div class="message">This one's for you!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 10">
+        </div>
+        <!-- Box 11 -->
+        <div class="gift-box" onclick="openGiftBox(11)">
+            <div class="message">Unwrap your surprise!</div>
+            <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 11">
         </div>
     </div>
 
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <img id="modalImage" src="" alt="Image">
+    </div>
+
     <script>
-        // JavaScript to Control Animation and Overlay Display
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        const body = document.body;
 
-        const giftBox = document.getElementById('giftBox');
-        const overlay = document.getElementById('overlay');
-        const fullImage = document.getElementById('fullImage');
-        const closeBtn = document.getElementById('closeBtn');
+        function openGiftBox(boxId) {
+            // Image corresponding to the clicked box
+            let imageSrc = "image" + boxId + ".jpg"; // Make sure to change the names according to your images
 
-        // When gift box is clicked, reveal the image
-        giftBox.addEventListener('click', function () {
-            giftBox.classList.add('opened'); // Animate gift box
-            overlay.classList.add('show'); // Show overlay with blurred background
-        });
+            // Show the modal and image
+            modal.classList.add("active");
+            modalImage.src = imageSrc;
 
-        // When close button is clicked, hide the image and return to gallery
-        closeBtn.addEventListener('click', function () {
-            overlay.classList.remove('show'); // Hide overlay
-            giftBox.classList.remove('opened'); // Reset gift box position
-        });
+            // Add blur effect on background
+            body.classList.add("blur-background");
+        }
+
+        function closeModal() {
+            // Close the modal
+            modal.classList.remove("active");
+
+            // Remove the blur effect from the background
+            body.classList.remove("blur-background");
+        }
     </script>
-
 </body>
 </html>
