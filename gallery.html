@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .photo {
+            margin: 10px;
+            width: 150px;
+            height: 150px;
+            background-color: white;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+        }
+
+        .photo:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Gallery Photos -->
+    <div class="photo" style="background-image: url('photo1.jpg');"></div>
+    <div class="photo" style="background-image: url('photo2.jpg');"></div>
+    <div class="photo" style="background-image: url('photo3.jpg');"></div>
+    <div class="photo" style="background-image: url('photo4.jpg');"></div>
+    <div class="photo" style="background-image: url('photo5.jpg');"></div>
+    <!-- Add more photos similarly -->
+</body>
+</html>
