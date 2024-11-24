@@ -113,11 +113,14 @@
         /* Gallery Container */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 5px;
             padding: 20px;
-            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            overflow-y: scroll;
             margin: 0 auto;
+            z-index: 2;
         }
 
         /* Gallery Images */
@@ -202,8 +205,8 @@
 
     <div class="gallery">
         <!-- Gallery Images -->
-        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 1">
-        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 2">
+        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1">
+        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2">
         <img src="https://via.placeholder.com/400x300" alt="Image 3">
         <img src="https://via.placeholder.com/400x300" alt="Image 4">
         <img src="https://via.placeholder.com/400x300" alt="Image 5">
@@ -248,7 +251,7 @@
         const modalImg = modal.querySelector('img');
         const modalDesc = modal.querySelector('p');
         const blurredBg = document.querySelector('.blurred-bg');
-        const closeBtn = document.querySelector('.close-btn');
+        const closeBtn = modal.querySelector('.close-btn');
 
         images.forEach(img => {
             img.addEventListener('click', () => {
@@ -266,7 +269,3 @@
     </script>
 </body>
 </html>
-
-
-
-
