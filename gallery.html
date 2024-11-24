@@ -43,13 +43,13 @@
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.9);
             padding: 30px;
-            max-width: 80%;
-            max-height: 80%;
+            width: 60%;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             text-align: center;
             overflow-y: auto;
+            max-height: 80%;
         }
 
         .modal img {
@@ -110,8 +110,10 @@
     <!-- Modal -->
     <div id="myModal" class="modal">
         <button class="close-btn" onclick="closeModal()">×</button>
-        <img id="modalImage" src="" alt="Modal Image">
-        <p id="modalText"></p>
+        <div>
+            <img id="modalImage" src="" alt="Modal Image">
+            <p id="modalText"></p>
+        </div>
     </div>
 
     <!-- Blurred Background -->
