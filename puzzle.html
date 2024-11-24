@@ -107,6 +107,13 @@
         #reply-button:hover {
             background: #ff324b;
         }
+
+        /* Remove HTML text */
+        #puzzle:before {
+            content: "";
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -156,7 +163,7 @@
                 piece.addEventListener('dragstart', dragStart);
                 piece.addEventListener('dragover', dragOver);
                 piece.addEventListener('drop', dropPiece);
-                
+
                 // Mobile touch events
                 piece.addEventListener('touchstart', dragStartMobile);
                 piece.addEventListener('touchmove', dragMoveMobile);
@@ -254,4 +261,3 @@
     </script>
 </body>
 </html>
-html>
