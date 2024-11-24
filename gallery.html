@@ -9,38 +9,129 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+            background-size: 400% 400%;
+            animation: gradient 8s ease infinite;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow: hidden;
         }
 
-        .photo {
-            margin: 10px;
-            width: 150px;
-            height: 150px;
-            background-color: white;
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .photo-container {
+            margin: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
         }
 
-        .photo:hover {
-            transform: scale(1.1);
+        .photo-container:hover {
+            transform: scale(1.05);
         }
+
+        .photo-container img {
+            display: block;
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Heart Animation */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 100, 150, 0.8);
+            opacity: 0.8;
+            clip-path: polygon(50% 0%, 61% 17%, 80% 22%, 67% 42%, 70% 60%, 50% 50%, 30% 60%, 33% 42%, 20% 22%, 39% 17%);
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Create multiple hearts with different positions and delays */
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 25%; animation-delay: 1s; }
+        .heart:nth-child(3) { left: 40%; animation-delay: 2s; }
+        .heart:nth-child(4) { left: 55%; animation-delay: 3s; }
+        .heart:nth-child(5) { left: 70%; animation-delay: 4s; }
+        .heart:nth-child(6) { left: 85%; animation-delay: 5s; }
     </style>
 </head>
 <body>
+    <!-- Animated Hearts -->
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+
     <!-- Gallery Photos -->
-    <div class="photo" style="background-image: url('photo1.jpg');"></div>
-    <div class="photo" style="background-image: url('photo2.jpg');"></div>
-    <div class="photo" style="background-image: url('photo3.jpg');"></div>
-    <div class="photo" style="background-image: url('photo4.jpg');"></div>
-    <div class="photo" style="background-image: url('photo5.jpg');"></div>
-    <!-- Add more photos similarly -->
+    <div class="photo-container">
+        <img src="photo1.jpg" alt="Special Memory 1">
+    </div>
+    <div class="photo-container">
+        <img src="photo2.jpg" alt="Special Memory 2">
+    </div>
+    <div class="photo-container">
+        <img src="photo3.jpg" alt="Special Memory 3">
+    </div>
+    <div class="photo-container">
+        <img src="photo4.jpg" alt="Special Memory 4">
+    </div>
+    <div class="photo-container">
+        <img src="photo5.jpg" alt="Special Memory 5">
+    </div>
+    <div class="photo-container">
+        <img src="photo6.jpg" alt="Special Memory 6">
+    </div>
+    <div class="photo-container">
+        <img src="photo7.jpg" alt="Special Memory 7">
+    </div>
+    <div class="photo-container">
+        <img src="photo8.jpg" alt="Special Memory 8">
+    </div>
+    <div class="photo-container">
+        <img src="photo9.jpg" alt="Special Memory 9">
+    </div>
+    <div class="photo-container">
+        <img src="photo10.jpg" alt="Special Memory 10">
+    </div>
+    <div class="photo-container">
+        <img src="photo11.jpg" alt="Special Memory 11">
+    </div>
+    <div class="photo-container">
+        <img src="photo12.jpg" alt="Special Memory 12">
+    </div>
+    <div class="photo-container">
+        <img src="photo13.jpg" alt="Special Memory 13">
+    </div>
+    <div class="photo-container">
+        <img src="photo14.jpg" alt="Special Memory 14">
+    </div>
+    <div class="photo-container">
+        <img src="photo15.jpg" alt="Special Memory 15">
+    </div>
 </body>
 </html>
