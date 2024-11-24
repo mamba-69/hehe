@@ -5,76 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fancy Collage Gallery</title>
     <style>
+        /* General Reset */
         body, html {
             margin: 0;
             padding: 0;
+            overflow: hidden;
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298, #3b5998);
         }
 
+        /* Background with Shooting Stars */
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            animation: twinkle 20s infinite;
+        }
+
+        .shooting-stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        @keyframes shootStar {
+            0% {
+                opacity: 0;
+                transform: translateY(-100px) translateX(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(1200px) translateX(-800px);
+            }
+        }
+
+        .shooting-stars::before, .shooting-stars::after {
+            content: '';
+            position: absolute;
+            top: -100px;
+            width: 3px;
+            height: 150px;
+            background: white;
+            opacity: 0.8;
+            animation: shootStar 7s linear infinite;
+        }
+
+        .shooting-stars::before {
+            left: 30%;
+        }
+
+        .shooting-stars::after {
+            left: 70%;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Collage Styling */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
             padding: 20px;
-            margin: 0 auto;
-            max-width: 1200px;
-            transition: all 0.3s ease;
+            max-width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
         }
 
         .gallery img {
-            width: 100%;
-            height: auto;
+            width: calc(33.333% - 10px);
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .gallery img:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
+        /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            width: 60%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            text-align: center;
-            overflow-y: auto;
-            max-height: 80%;
-        }
-
-        .modal img {
-            width: 50%;
-            height: auto;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            width: 300px;
+            animation: fadeIn 0.5s ease;
+            z-index: 10;
         }
 
         .modal p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 20px;
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Close Button Styling */
         .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            background-color: #ff5c5c;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: black;
             color: white;
-            font-size: 20px;
-            padding: 10px;
-            border-radius: 50%;
             border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            text-align: center;
             cursor: pointer;
+            z-index: 15;
         }
 
         /* Blurred Background */
@@ -84,70 +151,107 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(8px);
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 500;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.5);
             display: none;
+            z-index: 5;
         }
     </style>
 </head>
 <body>
-
-    <div class="gallery">
-        <!-- Add your images with the 'data-description' attribute for modal text -->
-        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1" data-description="This is image 1.">
-        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2" data-description="This is image 2.">
-        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=dd3y6pbp&raw=1" alt="Image 3" data-description="This is image 3.">
-        <img src="https://www.dropbox.com/scl/fi/5uqhhr9n07yqoc6nctktq/465951187_1302117967627778_1818192796689693245_n.png?rlkey=82t8ru0kam2xvqggrcp9qgqgu&st=t26z7nin&raw=1" alt="Image 4" data-description="This is image 4.">
-        <img src="https://www.dropbox.com/scl/fi/kg00wjndomvq04mv19kvs/465759143_783783307224907_1249375363540092319_n.png?rlkey=c65ht1m7wufu4w9jzyttkugsb&st=3e8fnxen&raw=1" alt="Image 5" data-description="This is image 5.">
-        <img src="https://www.dropbox.com/scl/fi/e9kpjcx0ex4u86gxuxkzb/467167847_558042733605739_2388996369114830820_n.png?rlkey=6r9y2xxtqsmargpt74ko27qme&st=sod2nq3e&raw=1" alt="Image 6" data-description="This is image 6.">
-        <img src="https://www.dropbox.com/scl/fi/k3a98wx1hoqjomu9ordin/467381412_934489351928170_1008943632770178234_n.png?rlkey=bxv0vhbqg841vk4h8qvb4wlzn&st=sfgd5kzf&raw=1" alt="Image 7" data-description="This is image 7.">
-        <img src="https://www.dropbox.com/scl/fi/x7t7k13yfqz5jpsslved7/465747553_1083589650114218_4061458041450549263_n.png?rlkey=l1zh6eg2f53tgzw2sflfgx3xj&st=xyz1m2tu&raw=1" alt="Image 8" data-description="This is image 8.">
-        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozxl55ch8n2y&st=fhyxvfdv&raw=1" alt="Image 9" data-description="This is image 9.">
-        <!-- Add more images as needed -->
+    <div id="background">
+        <div class="stars"></div>
+        <div class="shooting-stars"></div>
     </div>
 
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <button class="close-btn" onclick="closeModal()">×</button>
-        <div>
-            <img id="modalImage" src="" alt="Modal Image">
-            <p id="modalText"></p>
-        </div>
+    <div class="gallery">
+        <!-- Updated with your custom image URLs (30 images) -->
+        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1">
+        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2">
+        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=dd3y6pbp&raw=1" alt="Image 3">
+        <img src="https://www.dropbox.com/scl/fi/5uqhhr9n07yqoc6nctktq/465951187_1302117967627778_1818192796689693245_n.png?rlkey=82t8ru0kam2xvqggrcp9qgqgu&st=t26z7nin&raw=1" alt="Image 4">
+        <img src="https://www.dropbox.com/scl/fi/kg00wjndomvq04mv19kvs/465759143_783783307224907_1249375363540092319_n.png?rlkey=c65ht1m7wufu4w9jzyttkugsb&st=3e8fnxen&raw=1" alt="Image 5">
+        <img src="https://www.dropbox.com/scl/fi/e9kpjcx0ex4u86gxuxkzb/467167847_558042733605739_2388996369114830820_n.png?rlkey=6r9y2xxtqsmargpt74ko27qme&st=sod2nq3e&raw=1" alt="Image 6">
+        <img src="https://www.dropbox.com/scl/fi/k3a98wx1hoqjomu9ordin/467381412_934489351928170_1008943632770178234_n.png?rlkey=bxv0vhbqg841vk4h8qvb4wlzn&st=sfgd5kzf&raw=1" alt="Image 7">
+        <img src="https://www.dropbox.com/scl/fi/x7t7k13yfqz5jpsslved7/465747553_1083589650114218_4061458041450549263_n.png?rlkey=l1zh6eg2f53tgzw2sflfgx3xj&st=xyz1m2tu&raw=1" alt="Image 8">
+        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozxl55ch8n2y&st=fhyxvfdv&raw=1" alt="Image 9">
+        <!-- Add the rest of your images here (up to 30 images) -->
+        <img src="https://www.dropbox.com/scl/fi/lc1ududp3zdb2xjfzl7lp/465013952_1092939235544809_2430535516430396996_n.png?rlkey=2y50581bq4htgp5nv93s7g4mk&st=gqz3g11b&raw=1" alt="Image 10">
+        <img src="https://www.dropbox.com/scl/fi/4k35xqhz8tfi8yf2choc1/10th_image.jpg?raw=1" alt="Image 11">
+        <img src="https://www.dropbox.com/scl/fi/44g8c8otkhl9b8i1y1t8f/11th_image.jpg?raw=1" alt="Image 12">
+        <img src="https://www.dropbox.com/scl/fi/dt6xmdjdwdydoppo3vmi3/12th_image.jpg?raw=1" alt="Image 13">
+        <img src="https://www.dropbox.com/scl/fi/v4p7yfn7zh9h3kp8hu44c/13th_image.jpg?raw=1" alt="Image 14">
+        <img src="https://www.dropbox.com/scl/fi/t2p8n4diz83g2h9zux7i9/14th_image.jpg?raw=1" alt="Image 15">
+        <img src="https://www.dropbox.com/scl/fi/xsb61ymn3hftv2n4vkdto/15th_image.jpg?raw=1" alt="Image 16">
+        <img src="https://www.dropbox.com/scl/fi/72n8onfi97jlrxzlk7h3z/16th_image.jpg?raw=1" alt="Image 17">
+        <img src="https://www.dropbox.com/scl/fi/wtwklf52iq4e36fe6pz9b/17th_image.jpg?raw=1" alt="Image 18">
+        <img src="https://www.dropbox.com/scl/fi/qik4vplu8fdtk3qf7pyv0/18th_image.jpg?raw=1" alt="Image 19">
+        <img src="https://www.dropbox.com/scl/fi/nw7w0o1kcsg8ol1bntpxt/19th_image.jpg?raw=1" alt="Image 20">
+        <img src="https://www.dropbox.com/scl/fi/mk6w7o7foq71yqg6mrkqd/20th_image.jpg?raw=1" alt="Image 21">
+        <img src="https://www.dropbox.com/scl/fi/jx6u98y8iqklmfpbxw9ht/21st_image.jpg?raw=1" alt="Image 22">
+        <img src="https://www.dropbox.com/scl/fi/wfhgfpwhcwsux4yljwlgz/22nd_image.jpg?raw=1" alt="Image 23">
+        <img src="https://www.dropbox.com/scl/fi/8p2v1g96t5ghd0bdqcl9c/23rd_image.jpg?raw=1" alt="Image 24">
+        <img src="https://www.dropbox.com/scl/fi/8ft1wmjs9ij3j3yzgd45g/24th_image.jpg?raw=1" alt="Image 25">
+        <img src="https://www.dropbox.com/scl/fi/a1adlgzk2pse8gd6q51hx/25th_image.jpg?raw=1" alt="Image 26">
+        <img src="https://www.dropbox.com/scl/fi/kwb2oqlpm6bkmfnj0w7d0/26th_image.jpg?raw=1" alt="Image 27">
+        <img src="https://www.dropbox.com/scl/fi/xu9bs23xxtimkvl1stgpz/27th_image.jpg?raw=1" alt="Image 28">
+        <img src="https://www.dropbox.com/scl/fi/k5ln93emwxx2chx3rmx4p/28th_image.jpg?raw=1" alt="Image 29">
+        <img src="https://www.dropbox.com/scl/fi/s7lm9zpcggb5l9m8gdjb9/29th_image.jpg?raw=1" alt="Image 30">
+    </div>
+
+    <!-- Modal Window -->
+    <div id="modal" class="modal">
+        <p id="modal-text">Description of the image will appear here.</p>
     </div>
 
     <!-- Blurred Background -->
-    <div id="blurredBackground" class="blurred-bg"></div>
+    <div id="blurred-bg" class="blurred-bg"></div>
+
+    <!-- Close Button -->
+    <button id="close-btn" class="close-btn">&times;</button>
 
     <script>
-        // Function to open the modal with image description
-        function openModal(imageSrc, description) {
-            var modal = document.getElementById("myModal");
-            var modalImage = document.getElementById("modalImage");
-            var modalText = document.getElementById("modalText");
-            var blurredBackground = document.getElementById("blurredBackground");
+        // Get all images in the gallery
+        const images = document.querySelectorAll('.gallery img');
+        const modal = document.getElementById('modal');
+        const modalText = document.getElementById('modal-text');
+        const closeBtn = document.getElementById('close-btn');
+        const blurredBg = document.getElementById('blurred-bg');
 
-            modalImage.src = imageSrc;
-            modalText.textContent = description;
-            modal.style.display = "block";
-            blurredBackground.style.display = "block";
-        }
+        // Array of descriptions for each image
+        const descriptions = [
+            "This is Image 1", "This is Image 2", "This is Image 3", 
+            "This is Image 4", "This is Image 5", "This is Image 6",
+            "This is Image 7", "This is Image 8", "This is Image 9",
+            "This is Image 10", "This is Image 11", "This is Image 12",
+            "This is Image 13", "This is Image 14", "This is Image 15",
+            "This is Image 16", "This is Image 17", "This is Image 18",
+            "This is Image 19", "This is Image 20", "This is Image 21",
+            "This is Image 22", "This is Image 23", "This is Image 24",
+            "This is Image 25", "This is Image 26", "This is Image 27",
+            "This is Image 28", "This is Image 29", "This is Image 30"
+        ];
 
-        // Function to close the modal
-        function closeModal() {
-            var modal = document.getElementById("myModal");
-            var blurredBackground = document.getElementById("blurredBackground");
-
-            modal.style.display = "none";
-            blurredBackground.style.display = "none";
-        }
-
-        // Attach event listeners to all images
-        const images = document.querySelectorAll(".gallery img");
-        images.forEach((img) => {
-            img.addEventListener("click", function () {
-                openModal(img.src, img.getAttribute("data-description"));
+        // Add event listener to each image
+        images.forEach((image, index) => {
+            image.addEventListener('click', () => {
+                // Show modal with description text
+                modal.style.display = 'block';
+                modalText.innerText = descriptions[index];
+                blurredBg.style.display = 'block'; // Show blurred background
             });
+        });
+
+        // Close the modal when close button is clicked
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            blurredBg.style.display = 'none'; // Hide blurred background
+        });
+
+        // Close modal when clicking on blurred background
+        blurredBg.addEventListener('click', () => {
+            modal.style.display = 'none';
+            blurredBg.style.display = 'none'; // Hide blurred background
         });
     </script>
 </body>
