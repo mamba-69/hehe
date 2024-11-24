@@ -3,153 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polaroid Gallery</title>
+    <title>Gift Box Reveal</title>
     <style>
-        /* General Body Styling */
+        /* General Body and Page Styling */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            overflow: hidden;  /* Prevent vertical scroll */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111;
         }
 
-        /* Starry Night Sky Background */
-        .background {
-            position: absolute;
+        /* Gift Box Styling */
+        .gift-box {
+            width: 100px;
+            height: 100px;
+            background-color: #f1c40f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        /* Hover Effect on Gift Box */
+        .gift-box:hover {
+            transform: scale(1.1);
+        }
+
+        /* Gift Box Animation */
+        .gift-box.opened {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        /* The Background Overlay for Blur */
+        .overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat; /* Background with stars */
-            background-size: cover;
-            z-index: -1;  /* Ensure background is behind gallery */
-        }
-
-        /* Container for the Polaroid Gallery */
-        .gallery-container {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
             display: flex;
-            justify-content: flex-start;
-            gap: 30px;
-            padding: 50px;
-            overflow-x: scroll;
-            width: 100%;
-            height: 100vh;
-            position: relative;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Polaroid Photo Styling */
-        .polaroid {
-            width: 220px;
-            height: 300px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            margin: 20px;
-            position: relative;
-            transform: rotate(-10deg);
-            transition: transform 0.3s, box-shadow 0.3s;
+        /* Showing the Overlay */
+        .overlay.show {
+            visibility: visible;
+            opacity: 1;
         }
 
-        .polaroid:hover {
-            transform: rotate(0deg) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        /* Full Image Styling */
+        .full-image {
+            width: 60%;
+            max-width: 700px;
+            max-height: 80%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
         }
 
-        /* Image inside Polaroid */
-        .polaroid img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-bottom: 10px solid white; /* Adds border at the bottom */
-            border-radius: 8px;
-        }
-
-        /* Optional Caption (if you want) */
-        .caption {
+        /* Close Button Styling */
+        .close-btn {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            font-size: 16px;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4757;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn:hover {
+            background-color: #ff6b81;
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Background with stars -->
-    <div class="background"></div>
+    <!-- Gift Box that Will Be Clicked to Reveal Image -->
+    <div class="gift-box" id="giftBox">
+        <span>🎁</span> <!-- You can add an icon or text here -->
+    </div>
 
-    <!-- Gallery Container -->
-    <div class="gallery-container">
-        <!-- Polaroid Photo 1 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/ff6347/ffffff?text=Image+1" alt="Image 1">
-            <div class="caption">Image 1 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 2 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/4682b4/ffffff?text=Image+2" alt="Image 2">
-            <div class="caption">Image 2 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 3 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/32cd32/ffffff?text=Image+3" alt="Image 3">
-            <div class="caption">Image 3 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 4 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/ff8c00/ffffff?text=Image+4" alt="Image 4">
-            <div class="caption">Image 4 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 5 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/800080/ffffff?text=Image+5" alt="Image 5">
-            <div class="caption">Image 5 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 6 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/ff1493/ffffff?text=Image+6" alt="Image 6">
-            <div class="caption">Image 6 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 7 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/8a2be2/ffffff?text=Image+7" alt="Image 7">
-            <div class="caption">Image 7 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 8 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/7fff00/ffffff?text=Image+8" alt="Image 8">
-            <div class="caption">Image 8 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 9 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/ff0000/ffffff?text=Image+9" alt="Image 9">
-            <div class="caption">Image 9 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 10 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/0000ff/ffffff?text=Image+10" alt="Image 10">
-            <div class="caption">Image 10 Caption</div>
-        </div>
-
-        <!-- Polaroid Photo 11 -->
-        <div class="polaroid">
-            <img src="https://via.placeholder.com/220x300/ffff00/ffffff?text=Image+11" alt="Image 11">
-            <div class="caption">Image 11 Caption</div>
+    <!-- Overlay and Full Image -->
+    <div class="overlay" id="overlay">
+        <div>
+            <img src="https://via.placeholder.com/700x500" alt="Full Image" class="full-image" id="fullImage">
+            <button class="close-btn" id="closeBtn">X</button>
         </div>
     </div>
+
+    <script>
+        // JavaScript to Control Animation and Overlay Display
+
+        const giftBox = document.getElementById('giftBox');
+        const overlay = document.getElementById('overlay');
+        const fullImage = document.getElementById('fullImage');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // When gift box is clicked, reveal the image
+        giftBox.addEventListener('click', function () {
+            giftBox.classList.add('opened'); // Animate gift box
+            overlay.classList.add('show'); // Show overlay with blurred background
+        });
+
+        // When close button is clicked, hide the image and return to gallery
+        closeBtn.addEventListener('click', function () {
+            overlay.classList.remove('show'); // Hide overlay
+            giftBox.classList.remove('opened'); // Reset gift box position
+        });
+    </script>
 
 </body>
 </html>
