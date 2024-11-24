@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -165,39 +166,39 @@
         function shufflePuzzle() {
             const shuffledPieces = [...pieces];
             shuffledPieces.sort(() => Math.random() - 0.5);
-            shuffledPieces.forEach(piece => puzzle.appendChild(piece));
+            shuffledPieces.forEach(piece => {
+                puzzle.appendChild(piece);
+            });
         }
 
-        // Drag start event
+        // Drag functions
         function dragStart(e) {
             e.dataTransfer.setData('text', e.target.dataset.index);
-            e.target.classList.add('dragging');
         }
 
-        // Drag over event
         function dragOver(e) {
             e.preventDefault();
         }
 
-        // Drop event for pieces
         function dropPiece(e) {
             e.preventDefault();
             const draggedIndex = e.dataTransfer.getData('text');
-            const draggedPiece = document.querySelector(`.puzzle-piece[data-index="${draggedIndex}"]`);
-            const targetPiece = e.target;
+            const droppedPiece = e.target;
 
-            if (draggedPiece && targetPiece && draggedPiece !== targetPiece) {
-                const draggedPos = draggedPiece.style.backgroundPosition;
-                draggedPiece.style.backgroundPosition = targetPiece.style.backgroundPosition;
-                targetPiece.style.backgroundPosition = draggedPos;
-
+            if (draggedIndex !== droppedPiece.dataset.index) {
+                const draggedPiece = pieces[draggedIndex];
+                puzzle.insertBefore(draggedPiece, droppedPiece);
                 checkPuzzleCompletion();
             }
         }
 
         // Check if puzzle is complete
         function checkPuzzleCompletion() {
-            const isComplete = pieces.every(piece => piece.style.backgroundPosition === piece.dataset.correctPosition);
+            const isComplete = pieces.every(piece => {
+                console.log(`Piece ${piece.dataset.index}: ${piece.style.backgroundPosition} === ${piece.dataset.correctPosition}`);
+                return piece.style.backgroundPosition === piece.dataset.correctPosition;
+            });
+
             if (isComplete && !isPuzzleComplete) {
                 isPuzzleComplete = true;
                 showGiftBox();
@@ -207,24 +208,17 @@
             }
         }
 
-        // Show gift box modal
+        // Show the gift box when puzzle is completed
         function showGiftBox() {
             giftBoxModal.style.display = 'block';
         }
 
-        // Event listener for gift box click
-        giftBox.addEventListener('click', () => {
-            giftBoxModal.style.display = 'none'; // Hide the modal after clicking the gift box
-        });
-
-        // Go back function
+        // Go back and reset
         function goBack() {
-            window.history.back();
+            window.location.reload();
         }
 
-        // Initialize puzzle on page load
-        window.onload = generatePuzzle;
+        generatePuzzle();
     </script>
-
 </body>
 </html>
