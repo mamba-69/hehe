@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe: Birthday Edition</title>
     <style>
-        /* General styling */
         body {
             margin: 0;
             padding: 0;
@@ -18,7 +17,6 @@
             align-items: center;
         }
 
-        /* Game container */
         .game-container {
             display: grid;
             grid-template-columns: repeat(3, 100px);
@@ -30,65 +28,63 @@
         .cell {
             width: 100px;
             height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background-color: rgba(255, 255, 255, 0.8);
             border: 2px solid #000;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             cursor: pointer;
         }
 
-        /* Gift box styling */
         #gift-box {
             display: none;
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             background: url('https://www.dropbox.com/scl/fi/at0ijl8ax7r6ma0x044xu/pngwing.com-1.png?rlkey=dmkr0q6l2bhlk14bjrqjz0seo&st=olq83pta&raw=1') no-repeat center center;
             background-size: contain;
             position: absolute;
-            top: 70%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             cursor: pointer;
             transition: transform 0.5s;
         }
 
         #gift-box.animate {
-            transform: translateX(-50%) scale(1.5);
+            transform: translate(-50%, -50%) scale(1.5);
         }
 
-        /* Modal styling */
         #message-box {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
             z-index: 100;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            width: 300px;
         }
 
         #message-box img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            margin: 10px 0;
+            margin: 20px 0;
         }
 
         #message-box p {
-            margin: 10px 0;
+            margin: 20px 0;
+            font-size: 1rem;
         }
 
-        /* Blur effect */
         .blur {
             filter: blur(5px);
         }
 
-        /* Buttons */
         .buttons {
             display: flex;
             justify-content: space-between;
@@ -112,7 +108,6 @@
 </head>
 <body>
 
-    <!-- Game grid -->
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
         <div class="cell" data-cell-index="1"></div>
@@ -125,10 +120,8 @@
         <div class="cell" data-cell-index="8"></div>
     </div>
 
-    <!-- Gift Box -->
     <div id="gift-box"></div>
 
-    <!-- Message Modal -->
     <div id="message-box">
         <h2>Happy Birthday Winner! 🎉</h2>
         <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=pf0gfwsr&raw=1" alt="Her Picture">
@@ -147,16 +140,26 @@
         const replayButton = document.getElementById('replay-button');
         const gameContainer = document.getElementById('game-container');
 
-        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1'; // Image for X
-        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1'; // Image for O
+        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
+        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
         let board = ['', '', '', '', '', '', '', '', ''];
         let isGameOver = false;
 
+        function botMove() {
+            if (!isGameOver) {
+                const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                board[randomIndex] = 'O';
+                cells[randomIndex].style.backgroundImage = `url('${botImage}')`;
+                checkWinner();
+            }
+        }
+
         function checkWinner() {
             const winningCombos = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                [0, 4, 8], [2, 4, 6]             // Diagonals
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
             ];
 
             winningCombos.forEach(([a, b, c]) => {
@@ -164,6 +167,7 @@
                     isGameOver = true;
                     giftBox.style.display = 'block';
                     giftBox.classList.add('animate');
+                    gameContainer.style.display = 'none'; // Hide the grid
                 }
             });
 
@@ -176,6 +180,7 @@
                     board[index] = 'X';
                     cell.style.backgroundImage = `url('${playerImage}')`;
                     checkWinner();
+                    if (!isGameOver) botMove();
                 }
             });
         });
@@ -187,6 +192,7 @@
 
         goBackButton.addEventListener('click', () => {
             messageBox.style.display = 'none';
+            gameContainer.style.display = 'grid'; // Show the grid again
             gameContainer.classList.remove('blur');
         });
 
@@ -195,10 +201,10 @@
             cells.forEach(cell => (cell.style.backgroundImage = ''));
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
+            gameContainer.style.display = 'grid';
             gameContainer.classList.remove('blur');
             isGameOver = false;
         });
     </script>
-
 </body>
 </html>
