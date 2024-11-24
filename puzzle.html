@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -157,6 +156,11 @@
                 piece.addEventListener('dragstart', dragStart);
                 piece.addEventListener('dragover', dragOver);
                 piece.addEventListener('drop', dropPiece);
+                
+                // Mobile touch events
+                piece.addEventListener('touchstart', dragStartMobile);
+                piece.addEventListener('touchmove', dragMoveMobile);
+                piece.addEventListener('touchend', dropPieceMobile);
             }
 
             shufflePuzzle();
@@ -171,7 +175,7 @@
             });
         }
 
-        // Drag functions
+        // Drag functions (desktop)
         function dragStart(e) {
             e.dataTransfer.setData('text', e.target.dataset.index);
         }
@@ -192,26 +196,54 @@
             }
         }
 
+        // Mobile Drag functions
+        function dragStartMobile(e) {
+            e.target.dataset.touchStart = `${e.touches[0].pageX},${e.touches[0].pageY}`;
+        }
+
+        function dragMoveMobile(e) {
+            e.preventDefault();
+            const touchPos = e.touches[0];
+            const [startX, startY] = e.target.dataset.touchStart.split(',').map(Number);
+            const deltaX = touchPos.pageX - startX;
+            const deltaY = touchPos.pageY - startY;
+            e.target.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        }
+
+        function dropPieceMobile(e) {
+            e.preventDefault();
+            const touchPos = e.changedTouches[0];
+            const [startX, startY] = e.target.dataset.touchStart.split(',').map(Number);
+            const deltaX = touchPos.pageX - startX;
+            const deltaY = touchPos.pageY - startY;
+            e.target.style.transform = `translate(0, 0)`; // Reset position
+
+            checkPuzzleCompletion();
+        }
+
         // Check if puzzle is complete
         function checkPuzzleCompletion() {
             const isComplete = pieces.every(piece => {
-                console.log(`Piece ${piece.dataset.index}: ${piece.style.backgroundPosition} === ${piece.dataset.correctPosition}`);
                 return piece.style.backgroundPosition === piece.dataset.correctPosition;
             });
 
             if (isComplete && !isPuzzleComplete) {
                 isPuzzleComplete = true;
                 showGiftBox();
-                document.body.classList.add('blurred'); // Blur background
-                backArrow.style.display = 'none'; // Hide the back arrow when the puzzle is complete
-                replyButton.style.display = 'block'; // Show reply button
             }
         }
 
         // Show the gift box when puzzle is completed
         function showGiftBox() {
-            giftBoxModal.style.display = 'block';
+            giftBox.style.display = 'block';
         }
+
+        // Modal display when the gift box is clicked
+        giftBox.addEventListener('click', () => {
+            giftBoxModal.style.display = 'block';
+            document.body.classList.add('blurred');
+            backArrow.style.display = 'none';
+        });
 
         // Go back and reset
         function goBack() {
@@ -222,3 +254,4 @@
     </script>
 </body>
 </html>
+html>
