@@ -145,6 +145,31 @@
                 transform: scale(1);
             }
         }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: white;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            color: #ff324b;
+        }
+
+        /* Hint Text */
+        .hint-text {
+            font-size: 1.5em;
+            color: white;
+            font-style: italic;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -157,6 +182,14 @@
     <div class="snowflake" style="left: 50%; animation-duration: 4s;">❄</div>
     <div class="snowflake" style="left: 70%; animation-duration: 7s;">❄</div>
     <div class="snowflake" style="left: 90%; animation-duration: 3s;">❄</div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='index.html'">←</button>
+
+    <!-- Hint Text for Clicking -->
+    <div class="hint-text">
+        Clicking pictures and clicking ON pictures, both are best!
+    </div>
 
     <!-- Collage Container -->
     <div class="collage">
