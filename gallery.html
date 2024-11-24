@@ -3,224 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amsterline&display=swap" rel="stylesheet">
+    <title>Gallery with Falling Stars</title>
     <style>
-        body {
-            font-family: 'Amsterline', cursive;
+        /* Reset and body styles */
+        body, html {
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #e6ffe6;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        h1 {
-            margin-top: 20px;
-            font-size: 3rem;
-            color: #005f00;
-        }
-
-        .gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            max-width: 1200px;
-            margin: 20px auto;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        .gallery-item {
-            width: calc(33.33% - 20px);
-            margin-bottom: 15px;
             overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item img {
             width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 10px;
+            height: 100%;
+            font-family: Arial, sans-serif;
         }
 
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
+        /* Gradient Background */
+        #background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298, #3b5998);
+            overflow: hidden;
+            z-index: -1;
         }
 
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            position: relative;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 80%;
-            max-height: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .modal-content img {
-            max-width: 100%;
-            max-height: 60%;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-
-        .modal-content .description {
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        .close-btn {
+        /* Stars */
+        .stars {
             position: absolute;
-            top: -20px;
-            right: -20px;
-            font-size: 1.5em;
-            background-color: black;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            padding: 5px 10px;
-            z-index: 15;
-        }
-
-        .close-btn:hover {
-            background-color: red;
-        }
-
-        /* Falling Leaves Animation */
-        .leaf {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: url('https://via.placeholder.com/40x40?text=Leaf') no-repeat center/contain;
-            animation: fall linear infinite;
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            animation: twinkle 20s infinite;
             z-index: 1;
         }
 
-        @keyframes fall {
-            from {
-                transform: translateY(-100%);
+        /* Twinkling Effect */
+        .twinkling {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: twinkle 3s infinite ease-in-out alternate;
+            z-index: 2;
+        }
+
+        /* Shooting Stars */
+        .shooting-stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+        }
+
+        /* Shooting Stars Animation */
+        @keyframes shootStar {
+            0% {
+                opacity: 0;
+                transform: translateY(-200px) translateX(0);
             }
-            to {
-                transform: translateY(100vh);
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(2000px) translateX(-1000px);
             }
         }
 
-        /* Add Scrolling */
-        .scrollable {
-            overflow-y: scroll;
+        /* Randomly Create Shooting Stars */
+        .shooting-stars::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            width: 2px;
+            height: 100px;
+            background: white;
+            opacity: 0.8;
+            animation: shootStar 5s linear infinite;
+            animation-delay: 2s;
+        }
+
+        .shooting-stars::after {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 70%;
+            width: 2px;
+            height: 120px;
+            background: white;
+            opacity: 0.5;
+            animation: shootStar 7s linear infinite;
+            animation-delay: 5s;
+        }
+
+        /* Twinkling Keyframes */
+        @keyframes twinkle {
+            0% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Gallery Container */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 15px;
+        }
+
+        /* Gallery Images */
+        .gallery img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 5;
+        }
+
+        /* Modal Content */
+        .modal img {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .modal p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Blurred Background */
+        .blurred-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 4;
+            display: none;
         }
     </style>
 </head>
 <body>
-
-    <h1>Our Jungle Memories</h1>
-    <div class="gallery-container scrollable" id="galleryContainer">
-        <!-- Images are dynamically added using JavaScript -->
+    <div id="background">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="shooting-stars"></div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal" id="imageModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">×</button>
-            <img id="modalImage" src="" alt="Gallery Image">
-            <p class="description" id="modalDescription"></p>
-        </div>
+    <div class="gallery">
+        <!-- Gallery Images -->
+        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 1">
+        <img src="https://via.placeholder.com/150" alt="Image 2">
+        <img src="https://via.placeholder.com/150" alt="Image 3">
+        <img src="https://via.placeholder.com/150" alt="Image 4">
+        <img src="https://via.placeholder.com/150" alt="Image 5">
+        <img src="https://via.placeholder.com/150" alt="Image 6">
+        <img src="https://via.placeholder.com/150" alt="Image 7">
+        <img src="https://via.placeholder.com/150" alt="Image 8">
+        <img src="https://via.placeholder.com/150" alt="Image 9">
+        <img src="https://via.placeholder.com/150" alt="Image 10">
+        <img src="https://via.placeholder.com/150" alt="Image 11">
+        <img src="https://via.placeholder.com/150" alt="Image 12">
+        <img src="https://via.placeholder.com/150" alt="Image 13">
+        <img src="https://via.placeholder.com/150" alt="Image 14">
+        <img src="https://via.placeholder.com/150" alt="Image 15">
+        <img src="https://via.placeholder.com/150" alt="Image 16">
+        <img src="https://via.placeholder.com/150" alt="Image 17">
+        <img src="https://via.placeholder.com/150" alt="Image 18">
+        <img src="https://via.placeholder.com/150" alt="Image 19">
+        <img src="https://via.placeholder.com/150" alt="Image 20">
+        <img src="https://via.placeholder.com/150" alt="Image 21">
+        <img src="https://via.placeholder.com/150" alt="Image 22">
+        <img src="https://via.placeholder.com/150" alt="Image 23">
+        <img src="https://via.placeholder.com/150" alt="Image 24">
+        <img src="https://via.placeholder.com/150" alt="Image 25">
+        <img src="https://via.placeholder.com/150" alt="Image 26">
+        <img src="https://via.placeholder.com/150" alt="Image 27">
+        <img src="https://via.placeholder.com/150" alt="Image 28">
+        <img src="https://via.placeholder.com/150" alt="Image 29">
+        <img src="https://via.placeholder.com/150" alt="Image 30">
+    </div>
+
+    <div class="blurred-bg"></div>
+
+    <div class="modal">
+        <button class="close-btn">&times;</button>
+        <img src="" alt="Modal Image">
+        <p>Image Description Here</p>
     </div>
 
     <script>
-        // List of images and their descriptions
-        const images = [
-            { src: 'https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1', desc: 'Memory #1 description' },
-            { src: 'https://via.placeholder.com/300x400?text=Image2', desc: 'Memory #2 description' },
-            { src: 'https://via.placeholder.com/300x400?text=Image3', desc: 'Memory #3 description' },
-            { src: 'https://via.placeholder.com/300x400?text=Image4', desc: 'Memory #4 description' },
-            // Add all 30 images here
-        ];
+        const images = document.querySelectorAll('.gallery img');
+        const modal = document.querySelector('.modal');
+        const modalImg = modal.querySelector('img');
+        const modalDesc = modal.querySelector('p');
+        const blurredBg = document.querySelector('.blurred-bg');
+        const closeModal = document.querySelector('.close-btn');
 
-        // Dynamically populate the gallery
-        const galleryContainer = document.getElementById('galleryContainer');
-        images.forEach((image, index) => {
-            const galleryItem = document.createElement('div');
-            galleryItem.classList.add('gallery-item');
-            galleryItem.innerHTML = `
-                <img src="${image.src}" alt="Image ${index + 1}" onclick="openModal(${index})">
-            `;
-            galleryContainer.appendChild(galleryItem);
+        images.forEach((img, index) => {
+            img.addEventListener('click', () => {
+                modal.style.display = 'block';
+                blurredBg.style.display = 'block';
+                modalImg.src = img.src;
+                modalDesc.textContent = `This is image ${index + 1}`;
+            });
         });
 
-        // Modal functionality
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalDescription = document.getElementById('modalDescription');
-
-        function openModal(index) {
-            modalImage.src = images[index].src;
-            modalDescription.textContent = images[index].desc;
-            modal.classList.add('active');
-            galleryContainer.classList.add('blur'); // Add blur effect
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            galleryContainer.classList.remove('blur'); // Remove blur effect
-        }
-
-        // Falling Leaves Animation
-        const leafUrls = [
-            'https://via.placeholder.com/40x40?text=Leaf1',
-            'https://via.placeholder.com/40x40?text=Leaf2',
-            'https://via.placeholder.com/40x40?text=Leaf3'
-        ];
-
-        function createLeaf() {
-            const leaf = document.createElement('div');
-            const randomLeaf = leafUrls[Math.floor(Math.random() * leafUrls.length)];
-            leaf.classList.add('leaf');
-            leaf.style.left = Math.random() * 100 + "vw";
-            leaf.style.animationDuration = Math.random() * 3 + 2 + "s";
-            leaf.style.backgroundImage = `url(${randomLeaf})`;
-            document.body.appendChild(leaf);
-
-            // Remove leaf after animation ends
-            leaf.addEventListener('animationend', () => {
-                leaf.remove();
-            });
-        }
-
-        // Generate leaves continuously
-        setInterval(createLeaf, 200);
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            blurredBg.style.display = 'none';
+        });
     </script>
-
 </body>
 </html>
+
 
 
