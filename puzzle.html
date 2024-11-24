@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: url('https://www.dropbox.com/scl/fi/keku49j90saa4ogbri2zm/vecteezy_futuristic-gaming-background-in-livestream-vector_6970462.jpg?rlkey=gb6vadhcvkieo4nad7gdeh8zr&st=vguhht73&raw=1') no-repeat center center fixed;
+            background: url('https://www.dropbox.com/scl/fi/m694qb7759nxa9bbeo11c/AdobeStock_880619685_Preview.jpeg?rlkey=5rlcaug70mkoshkgyypux1k2d&st=z76jm6jz&raw=1') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
             overflow: hidden;
@@ -121,7 +121,7 @@
     <div id="gift-box-modal">
         <div id="gift-box"></div>
         <p>Congratulations! Here's your surprise! 🥳</p>
-        <img src="https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=yhjjdrai&raw=1" alt="Message" style="width: 100%; margin-top: 20px;">
+        <img src="your-image.jpg" alt="Message" style="width: 100%; margin-top: 20px;">
         <p>Your special message goes here.</p>
     </div>
 
@@ -135,7 +135,7 @@
         const backArrow = document.getElementById('back-arrow');
         const replyButton = document.getElementById('reply-button');
         const pieces = [];
-        const imageUrl = 'https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=h9unzi2n&raw=1'; // The image to be scrambled
+        const imageUrl = 'https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=11sy1eyz&raw=1'; // The image to be scrambled
         let isPuzzleComplete = false;
 
         // Generate puzzle pieces
@@ -146,6 +146,10 @@
                 piece.style.backgroundPosition = `-${(i % 5) * 100}px -${Math.floor(i / 5) * 100}px`;  // 5 columns and 3 rows
                 piece.setAttribute('draggable', true);
                 piece.dataset.index = i;
+
+                // Store correct position data for each piece
+                piece.dataset.correctPosition = piece.style.backgroundPosition;
+
                 puzzle.appendChild(piece);
                 pieces.push(piece);
 
