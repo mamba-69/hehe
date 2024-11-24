@@ -28,110 +28,172 @@
 
         .photo-container {
             margin: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .photo-container:hover {
-            transform: scale(1.05);
+            position: relative;
+            cursor: pointer;
         }
 
         .photo-container img {
             display: block;
             width: 100%;
-            height: auto; /* Maintain aspect ratio */
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            transition: transform 0.3s;
         }
 
-        /* Heart Animation */
-        .heart {
+        .photo-container img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .close-btn {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: rgba(255, 100, 150, 0.8);
-            opacity: 0.8;
-            clip-path: polygon(50% 0%, 61% 17%, 80% 22%, 67% 42%, 70% 60%, 50% 50%, 30% 60%, 33% 42%, 20% 22%, 39% 17%);
-            animation: float 5s infinite ease-in-out;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) scale(0.5);
-                opacity: 0.6;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh) scale(1.2);
+        .close-btn:hover {
+            color: #f00;
+        }
+
+        /* Blur background when modal is active */
+        .blur {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
                 opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
             }
         }
-
-        /* Create multiple hearts with different positions and delays */
-        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .heart:nth-child(2) { left: 25%; animation-delay: 1s; }
-        .heart:nth-child(3) { left: 40%; animation-delay: 2s; }
-        .heart:nth-child(4) { left: 55%; animation-delay: 3s; }
-        .heart:nth-child(5) { left: 70%; animation-delay: 4s; }
-        .heart:nth-child(6) { left: 85%; animation-delay: 5s; }
     </style>
 </head>
 <body>
-    <!-- Animated Hearts -->
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
+    <div class="gallery">
+        <!-- Image containers with descriptions -->
+        <div class="photo-container" data-description="Our unforgettable first photo together.">
+            <img src="photo1.jpg" alt="Memory 1">
+        </div>
+        <div class="photo-container" data-description="A day at the beach filled with laughter.">
+            <img src="photo2.jpg" alt="Memory 2">
+        </div>
+        <div class="photo-container" data-description="This moment at the park was so special.">
+            <img src="photo3.jpg" alt="Memory 3">
+        </div>
+        <div class="photo-container" data-description="Celebrating your big day together.">
+            <img src="photo4.jpg" alt="Memory 4">
+        </div>
+        <div class="photo-container" data-description="Our fun road trip adventure!">
+            <img src="photo5.jpg" alt="Memory 5">
+        </div>
+        <div class="photo-container" data-description="Our first festive celebration.">
+            <img src="photo6.jpg" alt="Memory 6">
+        </div>
+        <div class="photo-container" data-description="Captured in the mountains, our serene getaway.">
+            <img src="photo7.jpg" alt="Memory 7">
+        </div>
+        <div class="photo-container" data-description="Dancing together under the stars.">
+            <img src="photo8.jpg" alt="Memory 8">
+        </div>
+        <div class="photo-container" data-description="Your happiest smile is my favorite.">
+            <img src="photo9.jpg" alt="Memory 9">
+        </div>
+        <div class="photo-container" data-description="A fun picnic day filled with joy.">
+            <img src="photo10.jpg" alt="Memory 10">
+        </div>
+        <div class="photo-container" data-description="Our anniversary celebration captured perfectly.">
+            <img src="photo11.jpg" alt="Memory 11">
+        </div>
+    </div>
 
-    <!-- Gallery Photos -->
-    <div class="photo-container">
-        <img src="photo1.jpg" alt="Special Memory 1">
+    <!-- Modal for description -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h2>Memory Description</h2>
+            <p id="descriptionText"></p>
+        </div>
     </div>
-    <div class="photo-container">
-        <img src="photo2.jpg" alt="Special Memory 2">
-    </div>
-    <div class="photo-container">
-        <img src="photo3.jpg" alt="Special Memory 3">
-    </div>
-    <div class="photo-container">
-        <img src="photo4.jpg" alt="Special Memory 4">
-    </div>
-    <div class="photo-container">
-        <img src="photo5.jpg" alt="Special Memory 5">
-    </div>
-    <div class="photo-container">
-        <img src="photo6.jpg" alt="Special Memory 6">
-    </div>
-    <div class="photo-container">
-        <img src="photo7.jpg" alt="Special Memory 7">
-    </div>
-    <div class="photo-container">
-        <img src="photo8.jpg" alt="Special Memory 8">
-    </div>
-    <div class="photo-container">
-        <img src="photo9.jpg" alt="Special Memory 9">
-    </div>
-    <div class="photo-container">
-        <img src="photo10.jpg" alt="Special Memory 10">
-    </div>
-    <div class="photo-container">
-        <img src="photo11.jpg" alt="Special Memory 11">
-    </div>
-    <div class="photo-container">
-        <img src="photo12.jpg" alt="Special Memory 12">
-    </div>
-    <div class="photo-container">
-        <img src="photo13.jpg" alt="Special Memory 13">
-    </div>
-    <div class="photo-container">
-        <img src="photo14.jpg" alt="Special Memory 14">
-    </div>
-    <div class="photo-container">
-        <img src="photo15.jpg" alt="Special Memory 15">
-    </div>
+
+    <script>
+        // JavaScript to handle modal functionality
+        const modal = document.getElementById("modal");
+        const closeModal = document.getElementById("closeModal");
+        const descriptionText = document.getElementById("descriptionText");
+        const photoContainers = document.querySelectorAll(".photo-container");
+        const body = document.body;
+
+        photoContainers.forEach(container => {
+            container.addEventListener("click", () => {
+                const description = container.getAttribute("data-description");
+                descriptionText.textContent = description;
+                modal.classList.add("active");
+                body.classList.add("blur");
+            });
+        });
+
+        closeModal.addEventListener("click", () => {
+            modal.classList.remove("active");
+            body.classList.remove("blur");
+        });
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.remove("active");
+                body.classList.remove("blur");
+            }
+        });
+    </script>
 </body>
 </html>
