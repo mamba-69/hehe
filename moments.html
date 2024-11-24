@@ -11,8 +11,9 @@
             padding: 0;
             font-family: 'Arial', sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             overflow: hidden;
             position: relative;
@@ -26,7 +27,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://www.dropbox.com/scl/fi/bz28qnrgf7f8jxp5lhify/2274659-bigthumbnail.jpg?rlkey=hp9q20vnn01fq6pcrecj4l3l5&st=md99qmgb&raw=1') no-repeat center center/cover; /* Replace with an appropriate winter background image */
+            background: url('winter_background.jpg') no-repeat center center/cover; /* Replace with a proper winter background */
             z-index: -3;
         }
 
@@ -49,56 +50,27 @@
             }
         }
 
-        /* Bookshelf Image */
-        .bookshelf-container {
-            position: relative;
-            width: 50%;
-            max-width: 300px;
+        /* Collage Styling */
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            max-width: 90%;
             margin: auto;
-            z-index: 1;
         }
 
-        .bookshelf {
+        .collage img {
             width: 100%;
             height: auto;
-        }
-
-        /* Images inside Bookshelf */
-        .photo-container {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            overflow: hidden;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .photo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Positioning images inside bookshelf slots */
-        .slot1 {
-            top: 30px;
-            left: 20px;
-        }
-
-        .slot2 {
-            top: 150px;
-            left: 80px;
-        }
-
-        .slot3 {
-            top: 280px;
-            left: 20px;
-        }
-
-        .slot4 {
-            top: 410px;
-            left: 80px;
+        .collage img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
         /* Modal styles */
@@ -183,21 +155,13 @@
     <div class="snowflake" style="left: 70%; animation-duration: 7s;">❄</div>
     <div class="snowflake" style="left: 90%; animation-duration: 3s;">❄</div>
 
-    <!-- Bookshelf Container -->
-    <div class="bookshelf-container">
-        <img src="https://www.dropbox.com/scl/fi/jtm8nq51qtpay9jh39dxi/BOOK-SHELF-8.webp?rlkey=m9u1pcchhz6krbzbr7ewz1m8r&st=o52qd96y&raw=1" alt="Bookshelf" class="bookshelf">
-        <div class="photo-container slot1" data-description="Our memorable vacation.">
-            <img src="moment1.jpg" alt="Moment 1">
-        </div>
-        <div class="photo-container slot2" data-description="Our first dinner together.">
-            <img src="moment2.jpg" alt="Moment 2">
-        </div>
-        <div class="photo-container slot3" data-description="A fun day at the park.">
-            <img src="moment3.jpg" alt="Moment 3">
-        </div>
-        <div class="photo-container slot4" data-description="A beautiful sunset we shared.">
-            <img src="moment4.jpg" alt="Moment 4">
-        </div>
+    <!-- Collage Container -->
+    <div class="collage">
+        <img src="moment1.jpg" alt="Moment 1" data-description="Our memorable vacation.">
+        <img src="moment2.jpg" alt="Moment 2" data-description="Our first dinner together.">
+        <img src="moment3.jpg" alt="Moment 3" data-description="A fun day at the park.">
+        <img src="moment4.jpg" alt="Moment 4" data-description="A beautiful sunset we shared.">
+        <img src="moment5.jpg" alt="Moment 5" data-description="A cozy evening together.">
     </div>
 
     <!-- Modal for description -->
@@ -214,12 +178,12 @@
         const modal = document.getElementById("modal");
         const closeModal = document.getElementById("closeModal");
         const descriptionText = document.getElementById("descriptionText");
-        const photoContainers = document.querySelectorAll(".photo-container");
+        const images = document.querySelectorAll(".collage img");
         const body = document.body;
 
-        photoContainers.forEach(container => {
-            container.addEventListener("click", () => {
-                const description = container.getAttribute("data-description");
+        images.forEach(img => {
+            img.addEventListener("click", () => {
+                const description = img.getAttribute("data-description");
                 descriptionText.textContent = description;
                 modal.classList.add("active");
                 body.classList.add("blur");
