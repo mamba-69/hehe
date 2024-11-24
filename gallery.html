@@ -3,197 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Gallery Carousel with Circular Motion</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
-            background-size: 400% 400%;
-            animation: gradient 8s ease infinite;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: Arial, sans-serif;
             overflow: hidden;
+            height: 100vh;
+            background: url('https://www.dropbox.com/scl/fi/nzvommve8pz4ks8l6wbmf/pexels-pixabay-355887.jpg?rlkey=picgqg4mpusga1ohgu032el4j&st=6pmt6s9h&raw=1') no-repeat center center/cover; /* Your space background */
         }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .photo-container {
-            margin: 15px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .photo-container img {
-            display: block;
-            width: 100%;
-            height: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .photo-container img:hover {
-            transform: scale(1.05);
-        }
-
-        /* Modal styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: fadeIn 0.4s ease;
-            width: 80%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .modal-content h2 {
-            font-size: 24px;
-            color: #333;
-        }
-
-        .modal-content p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        .close-btn {
+        /* Carousel Container */
+        .carousel-container {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            transition: color 0.3s;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 5px solid white; /* Optional border around the carousel */
         }
 
-        .close-btn:hover {
-            color: #f00;
+        .carousel {
+            display: flex;
+            animation: rotateCarousel 30s linear infinite; /* 30s for one full rotation */
         }
 
-        /* Blur background when modal is active */
-        .blur {
-            filter: blur(5px);
-            pointer-events: none;
+        .carousel img {
+            width: 200px; /* You can adjust the size of the images */
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
+        /* Animation to rotate carousel in circular motion */
+        @keyframes rotateCarousel {
+            0% {
+                transform: rotate(0deg);
             }
-            to {
-                opacity: 1;
-                transform: scale(1);
+            100% {
+                transform: rotate(360deg);
             }
+        }
+
+        /* Optional: Styling for the carousel images */
+        .carousel img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body>
-    <div class="gallery">
-        <!-- Image containers with descriptions -->
-        <div class="photo-container" data-description="Our unforgettable first photo together.">
-            <img src="photo1.jpg" alt="Memory 1">
-        </div>
-        <div class="photo-container" data-description="A day at the beach filled with laughter.">
-            <img src="photo2.jpg" alt="Memory 2">
-        </div>
-        <div class="photo-container" data-description="This moment at the park was so special.">
-            <img src="photo3.jpg" alt="Memory 3">
-        </div>
-        <div class="photo-container" data-description="Celebrating your big day together.">
-            <img src="photo4.jpg" alt="Memory 4">
-        </div>
-        <div class="photo-container" data-description="Our fun road trip adventure!">
-            <img src="photo5.jpg" alt="Memory 5">
-        </div>
-        <div class="photo-container" data-description="Our first festive celebration.">
-            <img src="photo6.jpg" alt="Memory 6">
-        </div>
-        <div class="photo-container" data-description="Captured in the mountains, our serene getaway.">
-            <img src="photo7.jpg" alt="Memory 7">
-        </div>
-        <div class="photo-container" data-description="Dancing together under the stars.">
-            <img src="photo8.jpg" alt="Memory 8">
-        </div>
-        <div class="photo-container" data-description="Your happiest smile is my favorite.">
-            <img src="photo9.jpg" alt="Memory 9">
-        </div>
-        <div class="photo-container" data-description="A fun picnic day filled with joy.">
-            <img src="photo10.jpg" alt="Memory 10">
-        </div>
-        <div class="photo-container" data-description="Our anniversary celebration captured perfectly.">
-            <img src="photo11.jpg" alt="Memory 11">
+
+    <!-- Carousel Container -->
+    <div class="carousel-container">
+        <div class="carousel">
+            <!-- Insert your 11 images below -->
+            <img src="https://via.placeholder.com/200/ff6347/ffffff?text=Image+1" alt="Image 1">
+            <img src="https://via.placeholder.com/200/4682b4/ffffff?text=Image+2" alt="Image 2">
+            <img src="https://via.placeholder.com/200/32cd32/ffffff?text=Image+3" alt="Image 3">
+            <img src="https://via.placeholder.com/200/ff8c00/ffffff?text=Image+4" alt="Image 4">
+            <img src="https://via.placeholder.com/200/800080/ffffff?text=Image+5" alt="Image 5">
+            <img src="https://via.placeholder.com/200/ff1493/ffffff?text=Image+6" alt="Image 6">
+            <img src="https://via.placeholder.com/200/8a2be2/ffffff?text=Image+7" alt="Image 7">
+            <img src="https://via.placeholder.com/200/7fff00/ffffff?text=Image+8" alt="Image 8">
+            <img src="https://via.placeholder.com/200/ff0000/ffffff?text=Image+9" alt="Image 9">
+            <img src="https://via.placeholder.com/200/0000ff/ffffff?text=Image+10" alt="Image 10">
+            <img src="https://via.placeholder.com/200/ffff00/ffffff?text=Image+11" alt="Image 11">
         </div>
     </div>
 
-    <!-- Modal for description -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="close-btn" id="closeModal">&times;</button>
-            <h2>Memory Description</h2>
-            <p id="descriptionText"></p>
-        </div>
-    </div>
-
-    <script>
-        // JavaScript to handle modal functionality
-        const modal = document.getElementById("modal");
-        const closeModal = document.getElementById("closeModal");
-        const descriptionText = document.getElementById("descriptionText");
-        const photoContainers = document.querySelectorAll(".photo-container");
-        const body = document.body;
-
-        photoContainers.forEach(container => {
-            container.addEventListener("click", () => {
-                const description = container.getAttribute("data-description");
-                descriptionText.textContent = description;
-                modal.classList.add("active");
-                body.classList.add("blur");
-            });
-        });
-
-        closeModal.addEventListener("click", () => {
-            modal.classList.remove("active");
-            body.classList.remove("blur");
-        });
-
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.classList.remove("active");
-                body.classList.remove("blur");
-            }
-        });
-    </script>
 </body>
 </html>
