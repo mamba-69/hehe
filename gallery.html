@@ -3,140 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery with Falling Stars</title>
+    <title>Fancy Collage Gallery</title>
     <style>
-        /* Reset and body styles */
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
         }
 
-        /* Gradient Background */
-        #background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #1e3c72, #2a5298, #3b5998);
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        /* Stars */
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-            animation: twinkle 20s infinite;
-            z-index: 1;
-        }
-
-        /* Twinkling Effect */
-        .twinkling {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            animation: twinkle 3s infinite ease-in-out alternate;
-            z-index: 2;
-        }
-
-        /* Shooting Stars */
-        .shooting-stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-        }
-
-        /* Shooting Stars Animation */
-        @keyframes shootStar {
-            0% {
-                opacity: 0;
-                transform: translateY(-200px) translateX(0);
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(2000px) translateX(-1000px);
-            }
-        }
-
-        /* Randomly Create Shooting Stars */
-        .shooting-stars::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            left: 50%;
-            width: 2px;
-            height: 100px;
-            background: white;
-            opacity: 0.8;
-            animation: shootStar 5s linear infinite;
-            animation-delay: 2s;
-        }
-
-        .shooting-stars::after {
-            content: '';
-            position: absolute;
-            top: -200px;
-            left: 70%;
-            width: 2px;
-            height: 120px;
-            background: white;
-            opacity: 0.5;
-            animation: shootStar 7s linear infinite;
-            animation-delay: 5s;
-        }
-
-        /* Twinkling Keyframes */
-        @keyframes twinkle {
-            0% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.7;
-            }
-        }
-
-        /* Gallery Container */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 5px;
+            gap: 15px;
             padding: 20px;
-            max-width: 100%;
-            height: 100%;
-            overflow-y: scroll;
             margin: 0 auto;
-            z-index: 2;
+            max-width: 1200px;
+            transition: all 0.3s ease;
         }
 
-        /* Gallery Images */
         .gallery img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .gallery img:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -144,43 +42,38 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 80%;
+            max-height: 80%;
             border-radius: 10px;
-            padding: 20px;
-            z-index: 5;
-            max-width: 90%;
-            max-height: 90%;
-            overflow: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            overflow-y: auto;
         }
 
-        /* Modal Content */
         .modal img {
-            width: auto;
-            max-width: 80%; /* Limit the size of the image */
+            width: 50%;
             height: auto;
-            display: block;
-            margin: 0 auto;
+            margin-bottom: 20px;
         }
 
         .modal p {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        /* Close Button */
         .close-btn {
             position: absolute;
-            top: -10px;
-            right: -10px;
-            background: black;
+            top: -15px;
+            right: -15px;
+            background-color: #ff5c5c;
             color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
             font-size: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            border: none;
             cursor: pointer;
         }
 
@@ -191,52 +84,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 4;
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 500;
             display: none;
         }
     </style>
 </head>
 <body>
-    <div id="background">
-        <div class="stars"></div>
-        <div class="twinkling"></div>
-        <div class="shooting-stars"></div>
-    </div>
 
     <div class="gallery">
-        <!-- Gallery Images -->
-        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1">
-        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2">
-        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=dd3y6pbp&raw=1" alt="Image 3">
-        <img src="https://www.dropbox.com/scl/fi/5uqhhr9n07yqoc6nctktq/465951187_1302117967627778_1818192796689693245_n.png?rlkey=82t8ru0kam2xvqggrcp9qgqgu&st=t26z7nin&raw=1" alt="Image 4">
-        <img src="https://www.dropbox.com/scl/fi/kg00wjndomvq04mv19kvs/465759143_783783307224907_1249375363540092319_n.png?rlkey=c65ht1m7wufu4w9jzyttkugsb&st=3e8fnxen&raw=1" alt="Image 5">
-        <img src="https://www.dropbox.com/scl/fi/e9kpjcx0ex4u86gxuxkzb/467167847_558042733605739_2388996369114830820_n.png?rlkey=6r9y2xxtqsmargpt74ko27qme&st=sod2nq3e&raw=1" alt="Image 6">
-        <img src="https://www.dropbox.com/scl/fi/k3a98wx1hoqjomu9ordin/467381412_934489351928170_1008943632770178234_n.png?rlkey=bxv0vhbqg841vk4h8qvb4wlzn&st=sfgd5kzf&raw=1" alt="Image 7">
-        <img src="https://www.dropbox.com/scl/fi/x7t7k13yfqz5jpsslved7/465747553_1083589650114218_4061458041450549263_n.png?rlkey=l1zh6eg2f53tgzw2sflfgx3xj&st=xyz1m2tu&raw=1" alt="Image 8">
-        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozxl55ch8n2y&st=fhyxvfdv&raw=1" alt="Image 9">
-        <img src="https://www.dropbox.com/scl/fi/lc1ududp3zdb2xjfzl7lp/465013952_1092939235544809_2430535516430396996_n.png?rlkey=2y50581bq4htgp5nv93s7g4mk&st=gqz3g11b&raw=1" alt="Image 10">
-        <img src="https://via.placeholder.com/400x300" alt="Image 11">
-        <img src="https://via.placeholder.com/400x300" alt="Image 12">
-        <img src="https://via.placeholder.com/400x300" alt="Image 13">
-        <img src="https://via.placeholder.com/400x300" alt="Image 14">
-        <img src="https://via.placeholder.com/400x300" alt="Image 15">
-        <img src="https://via.placeholder.com/400x300" alt="Image 16">
-        <img src="https://via.placeholder.com/400x300" alt="Image 17">
-        <img src="https://via.placeholder.com/400x300" alt="Image 18">
-        <img src="https://via.placeholder.com/400x300" alt="Image 19">
-        <img src="https://via.placeholder.com/400x300" alt="Image 20">
-        <img src="https://via.placeholder.com/400x300" alt="Image 21">
-        <img src="https://via.placeholder.com/400x300" alt="Image 22">
-        <img src="https://via.placeholder.com/400x300" alt="Image 23">
-        <img src="https://via.placeholder.com/400x300" alt="Image 24">
-        <img src="https://via.placeholder.com/400x300" alt="Image 25">
-        <img src="https://via.placeholder.com/400x300" alt="Image 26">
-        <img src="https://via.placeholder.com/400x300" alt="Image 27">
-        <img src="https://via.placeholder.com/400x300" alt="Image 28">
-        <img src="https://via.placeholder.com/400x300" alt="Image 29">
-        <img src="https://via.placeholder.com/400x300" alt="Image 30">
+        <!-- Add your images with the 'data-description' attribute for modal text -->
+        <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1" data-description="This is image 1.">
+        <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2" data-description="This is image 2.">
+        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=dd3y6pbp&raw=1" alt="Image 3" data-description="This is image 3.">
+        <img src="https://www.dropbox.com/scl/fi/5uqhhr9n07yqoc6nctktq/465951187_1302117967627778_1818192796689693245_n.png?rlkey=82t8ru0kam2xvqggrcp9qgqgu&st=t26z7nin&raw=1" alt="Image 4" data-description="This is image 4.">
+        <img src="https://www.dropbox.com/scl/fi/kg00wjndomvq04mv19kvs/465759143_783783307224907_1249375363540092319_n.png?rlkey=c65ht1m7wufu4w9jzyttkugsb&st=3e8fnxen&raw=1" alt="Image 5" data-description="This is image 5.">
+        <img src="https://www.dropbox.com/scl/fi/e9kpjcx0ex4u86gxuxkzb/467167847_558042733605739_2388996369114830820_n.png?rlkey=6r9y2xxtqsmargpt74ko27qme&st=sod2nq3e&raw=1" alt="Image 6" data-description="This is image 6.">
+        <img src="https://www.dropbox.com/scl/fi/k3a98wx1hoqjomu9ordin/467381412_934489351928170_1008943632770178234_n.png?rlkey=bxv0vhbqg841vk4h8qvb4wlzn&st=sfgd5kzf&raw=1" alt="Image 7" data-description="This is image 7.">
+        <img src="https://www.dropbox.com/scl/fi/x7t7k13yfqz5jpsslved7/465747553_1083589650114218_4061458041450549263_n.png?rlkey=l1zh6eg2f53tgzw2sflfgx3xj&st=xyz1m2tu&raw=1" alt="Image 8" data-description="This is image 8.">
+        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozxl55ch8n2y&st=fhyxvfdv&raw=1" alt="Image 9" data-description="This is image 9.">
+        <!-- Add more images as needed -->
     </div>
 
     <!-- Modal -->
@@ -250,20 +118,20 @@
     <div id="blurredBackground" class="blurred-bg"></div>
 
     <script>
-        // Open Modal Function
-        function openModal(imageSrc, textContent) {
+        // Function to open the modal with image description
+        function openModal(imageSrc, description) {
             var modal = document.getElementById("myModal");
             var modalImage = document.getElementById("modalImage");
             var modalText = document.getElementById("modalText");
             var blurredBackground = document.getElementById("blurredBackground");
 
             modalImage.src = imageSrc;
-            modalText.textContent = textContent;
+            modalText.textContent = description;
             modal.style.display = "block";
             blurredBackground.style.display = "block";
         }
 
-        // Close Modal Function
+        // Function to close the modal
         function closeModal() {
             var modal = document.getElementById("myModal");
             var blurredBackground = document.getElementById("blurredBackground");
@@ -272,11 +140,11 @@
             blurredBackground.style.display = "none";
         }
 
-        // Event Listeners for Gallery Images
+        // Attach event listeners to all images
         const images = document.querySelectorAll(".gallery img");
-        images.forEach((img, index) => {
-            img.addEventListener("click", () => {
-                openModal(img.src, "This is image " + (index + 1));
+        images.forEach((img) => {
+            img.addEventListener("click", function () {
+                openModal(img.src, img.getAttribute("data-description"));
             });
         });
     </script>
