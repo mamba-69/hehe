@@ -19,10 +19,22 @@
             overflow: hidden;
         }
 
+        .background-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: blur(5px);
+            pointer-events: none;
+            z-index: -1;
+            transition: filter 0.3s ease-in-out;
+        }
+
         .box-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-gap: 20px;
+            grid-gap: 30px;
             justify-items: center;
             padding: 20px;
             z-index: 1;
@@ -40,6 +52,11 @@
             border-radius: 10px;
             position: relative;
             box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1);
         }
 
         .gift-box img {
@@ -57,6 +74,8 @@
             padding: 5px 10px;
             border-radius: 5px;
             width: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
         .image-modal {
@@ -70,6 +89,7 @@
             z-index: 100;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.5s ease;
         }
 
         .image-modal.active {
@@ -80,6 +100,8 @@
             max-width: 80%;
             max-height: 80%;
             border-radius: 10px;
+            opacity: 0;
+            animation: fadeInImage 1s forwards;
         }
 
         .close-btn {
@@ -97,67 +119,88 @@
             color: red;
         }
 
+        /* To control the blur effect when the modal is opened */
         .blur-background {
             filter: blur(5px);
-            pointer-events: none;
+        }
+
+        /* Keyframes for fade-in effects */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInImage {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background-container"></div> <!-- This holds the blurred background -->
+    
     <div class="box-container">
         <!-- Box 1 -->
         <div class="gift-box" onclick="openGiftBox(1)">
-            <div class="message">This is what you get!</div>
+            <div class="message" id="message1">This is what you get!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 1">
         </div>
         <!-- Box 2 -->
         <div class="gift-box" onclick="openGiftBox(2)">
-            <div class="message">Wow, you got this!</div>
+            <div class="message" id="message2">Wow, you got this!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 2">
         </div>
         <!-- Box 3 -->
         <div class="gift-box" onclick="openGiftBox(3)">
-            <div class="message">Surprise coming your way!</div>
+            <div class="message" id="message3">Surprise coming your way!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 3">
         </div>
         <!-- Box 4 -->
         <div class="gift-box" onclick="openGiftBox(4)">
-            <div class="message">Lucky you!</div>
+            <div class="message" id="message4">Lucky you!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 4">
         </div>
         <!-- Box 5 -->
         <div class="gift-box" onclick="openGiftBox(5)">
-            <div class="message">You've unlocked this!</div>
+            <div class="message" id="message5">You've unlocked this!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 5">
         </div>
         <!-- Box 6 -->
         <div class="gift-box" onclick="openGiftBox(6)">
-            <div class="message">Here's your surprise!</div>
+            <div class="message" id="message6">Here's your surprise!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 6">
         </div>
         <!-- Box 7 -->
         <div class="gift-box" onclick="openGiftBox(7)">
-            <div class="message">Can you guess what's inside?</div>
+            <div class="message" id="message7">Can you guess what's inside?</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 7">
         </div>
         <!-- Box 8 -->
         <div class="gift-box" onclick="openGiftBox(8)">
-            <div class="message">A gift for you!</div>
+            <div class="message" id="message8">A gift for you!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 8">
         </div>
         <!-- Box 9 -->
         <div class="gift-box" onclick="openGiftBox(9)">
-            <div class="message">The magic begins!</div>
+            <div class="message" id="message9">The magic begins!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 9">
         </div>
         <!-- Box 10 -->
         <div class="gift-box" onclick="openGiftBox(10)">
-            <div class="message">This one's for you!</div>
+            <div class="message" id="message10">This one's for you!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 10">
         </div>
         <!-- Box 11 -->
         <div class="gift-box" onclick="openGiftBox(11)">
-            <div class="message">Unwrap your surprise!</div>
+            <div class="message" id="message11">Unwrap your surprise!</div>
             <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box 11">
         </div>
     </div>
@@ -172,24 +215,42 @@
         const modal = document.getElementById("imageModal");
         const modalImage = document.getElementById("modalImage");
         const body = document.body;
+        const messages = document.querySelectorAll('.message');
+
+        // Add URLs of your images for each box
+        const imageUrls = [
+            "https://www.dropbox.com/scl/fi/a19yqp66du4x6tkmhihf9/462642702_1577113209600697_202939817461201485_n.png?rlkey=rrdufhz0piavxmukp88hwnh1h&st=d7lsiiud&raw=1",
+            "https://example.com/image2.jpg",
+            "https://example.com/image3.jpg",
+            "https://example.com/image4.jpg",
+            "https://example.com/image5.jpg",
+            "https://example.com/image6.jpg",
+            "https://example.com/image7.jpg",
+            "https://example.com/image8.jpg",
+            "https://example.com/image9.jpg",
+            "https://example.com/image10.jpg",
+            "https://example.com/image11.jpg"
+        ];
 
         function openGiftBox(boxId) {
-            // Image corresponding to the clicked box
-            let imageSrc = "image" + boxId + ".jpg"; // Make sure to change the names according to your images
+            // Show the message for the clicked box
+            const message = document.getElementById(`message${boxId}`);
+            message.style.opacity = 1;
 
-            // Show the modal and image
-            modal.classList.add("active");
-            modalImage.src = imageSrc;
+            // After a delay, show the image with animation
+            setTimeout(() => {
+                // Set the image URL
+                modalImage.src = imageUrls[boxId - 1];
 
-            // Add blur effect on background
-            body.classList.add("blur-background");
+                // Show the modal and apply blur to background
+                modal.classList.add("active");
+                body.classList.add("blur-background");
+            }, 1000);  // Delay to show message first
         }
 
         function closeModal() {
-            // Close the modal
+            // Close the modal and reset background
             modal.classList.remove("active");
-
-            // Remove the blur effect from the background
             body.classList.remove("blur-background");
         }
     </script>
