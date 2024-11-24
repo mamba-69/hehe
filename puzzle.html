@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: url('https://www.dropbox.com/scl/fi/keku49j90saa4ogbri2zm/vecteezy_futuristic-gaming-background-in-livestream-vector_6970462.jpg?rlkey=gb6vadhcvkieo4nad7gdeh8zr&st=vguhht73&raw=1') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Puzzle Grid Styling */
+        #puzzle {
+            display: grid;
+            grid-template-columns: repeat(6, 100px);
+            grid-template-rows: repeat(6, 100px);
+            gap: 5px;
+            border: 2px solid #333;
+        }
+
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 600px 600px; /* Size of the full image */
+            cursor: pointer;
+            border: 1px solid #333;
+            box-sizing: border-box;
+        }
+
+        /* Modal Styling */
+        #gift-box-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 100;
+        }
+
+        #gift-box {
+            width: 150px;
+            height: 150px;
+            background: url('https://www.dropbox.com/scl/fi/at0ijl8ax7r6ma0x044xu/pngwing.com-1.png?rlkey=dmkr0q6l2bhlk14bjrqjz0seo&st=0754czm3&raw=1') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+            animation: appear 1s ease-in-out;
+        }
+
+        @keyframes appear {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Additional Styling for Drag and Drop */
+        .dragging {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Puzzle Grid -->
+    <div id="puzzle"></div>
+
+    <!-- Gift Box Modal -->
+    <div id="gift-box-modal">
+        <div id="gift-box"></div>
+        <p>Congratulations! Here's your surprise! 🥳</p>
+        <img src="your-image.jpg" alt="Message" style="width: 100%; margin-top: 20px;">
+        <p>Your special message goes here.</p>
+    </div>
+
+    <script>
+        const puzzle = document.getElementById('puzzle');
+        const giftBoxModal = document.getElementById('gift-box-modal');
+        const giftBox = document.getElementById('gift-box');
+        const pieces = [];
+        const imageUrl = 'https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=11sy1eyz&raw=1'; // The image to be scrambled
+
+        // Generate puzzle pieces
+        function generatePuzzle() {
+            for (let i = 0; i < 36; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('puzzle-piece');
+                piece.style.backgroundPosition = `-${(i % 6) * 100}px -${Math.floor(i / 6) * 100}px`;
+                piece.setAttribute('draggable', true);
+                piece.dataset.index = i;
+                puzzle.appendChild(piece);
+                pieces.push(piece);
+
+                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('dragover', dragOver);
+                piece.addEventListener('drop', dropPiece);
+            }
+
+            shufflePuzzle();
+        }
+
+        // Shuffle puzzle pieces
+        function shufflePuzzle() {
+            const shuffledPieces = [...pieces];
+            shuffledPieces.sort(() => Math.random() - 0.5);
+            shuffledPieces.forEach(piece => puzzle.appendChild(piece));
+        }
+
+        // Drag start event
+        function dragStart(e) {
+            e.dataTransfer.setData('text', e.target.dataset.index);
+            e.target.classList.add('dragging');
+        }
+
+        // Drag over event
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        // Drop event for pieces
+        function dropPiece(e) {
+            e.preventDefault();
+            const draggedIndex = e.dataTransfer.getData('text');
+            const draggedPiece = document.querySelector(`.puzzle-piece[data-index="${draggedIndex}"]`);
+            const targetPiece = e.target;
+
+            if (draggedPiece && targetPiece && draggedPiece !== targetPiece) {
+                const draggedPos = draggedPiece.style.backgroundPosition;
+                draggedPiece.style.backgroundPosition = targetPiece.style.backgroundPosition;
+                targetPiece.style.backgroundPosition = draggedPos;
+
+                checkPuzzleCompletion();
+            }
+        }
+
+        // Check if puzzle is complete
+        function checkPuzzleCompletion() {
+            const isComplete = pieces.every(piece => piece.style.backgroundPosition === piece.dataset.correctPosition);
+            if (isComplete) {
+                showGiftBox();
+            }
+        }
+
+        // Show gift box modal
+        function showGiftBox() {
+            giftBoxModal.style.display = 'block';
+        }
+
+        // Event listener for gift box click
+        giftBox.addEventListener('click', () => {
+            giftBoxModal.style.display = 'none'; // Hide the modal after clicking the gift box
+        });
+
+        // Initialize puzzle on page load
+        window.onload = generatePuzzle;
+    </script>
+
+</body>
+</html>
