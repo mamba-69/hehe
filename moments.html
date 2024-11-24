@@ -3,157 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Special Moments</title>
+    <title>Moments</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #89f7fe, #66a6ff);
-            color: white;
-            text-align: center;
+            background: linear-gradient(135deg, #f3e9dd, #f0c3b9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow: hidden;
         }
-        h1 {
-            font-size: 3em;
-            margin-top: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+
+        .shelf-container {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: #6d4c41;
             padding: 20px;
-            z-index: 10;
-        }
-        .gallery img {
-            max-width: 100%;
-            height: auto;
-            width: calc(33% - 40px); /* Responsive width */
-            max-width: 300px; /* Prevents images from being too large */
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .shelf {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #795548;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            height: 160px;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 120px;
+            height: 140px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transform: translateY(10px);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        .gallery img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+
+        .photo-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
-        .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #ff5e78;
-            color: white;
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background: none;
             border: none;
-            border-radius: 25px;
+            color: #888;
             cursor: pointer;
-            font-size: 1.2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s;
-            z-index: 10;
-        }
-        .back-button:hover {
-            background: #ff324b;
+            transition: color 0.3s;
         }
 
-        /* Sparkles Animation */
-        .sparkle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            animation: sparkle 3s ease-out infinite;
+        .close-btn:hover {
+            color: #f00;
         }
-        @keyframes sparkle {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
+
+        /* Blur background when modal is active */
+        .blur {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
                 opacity: 0;
-                transform: translateY(50vh) scale(0.5);
+                transform: scale(0.9);
             }
-        }
-
-        /* Falling Flowers */
-        .flower {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: url('flower.png') no-repeat center/cover;
-            animation: fall 5s linear infinite;
-        }
-        @keyframes fall {
-            0% {
-                transform: translateY(-100%);
+            to {
                 opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .gallery img {
-                width: calc(50% - 20px); /* Adjust for smaller screens */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .gallery img {
-                width: calc(100% - 20px); /* Full width for very small screens */
+                transform: scale(1);
             }
         }
     </style>
 </head>
 <body>
-    <h1>Our Special Moments 💖</h1>
-    <div class="gallery">
-        <img src="https://www.dropbox.com/scl/fi/6ensit49xrcx4fr5xhs8n/418568937_321339057590751_3985429228521046828_n.jpg?rlkey=3dq49g6vggu5rx9z0tdx7kdvq&st=ona5u0r9&raw=1" alt="Magical touch">
-        <img src="https://www.dropbox.com/scl/fi/0d79fau8m4dnqb60gr5pj/anish-manasvi.jpg?rlkey=rjmji37fhpfscoj52mkvrgen3&st=g0ja4uw5&raw=1" alt="Really us">
-        <img src="https://www.dropbox.com/scl/fi/e1y95v37ywq95xbga1r4m/432716520_1078317660132255_297398027064931974_n.jpg?rlkey=dthd8566zt9xpl0xbzkln5mgw&st=6l2yg48k&raw=1" alt="Avg. Indian Couple 🤭">
-        <!-- Add more images as needed -->
+    <div class="shelf-container">
+        <!-- Bookshelf design -->
+        <div class="shelf">
+            <div class="photo-container" data-description="Our unforgettable dinner date.">
+                <img src="moment1.jpg" alt="Moment 1">
+            </div>
+            <div class="photo-container" data-description="Exploring the city streets together.">
+                <img src="moment2.jpg" alt="Moment 2">
+            </div>
+            <div class="photo-container" data-description="A beautiful evening by the beach.">
+                <img src="moment3.jpg" alt="Moment 3">
+            </div>
+            <div class="photo-container" data-description="This surprise brought us closer.">
+                <img src="moment4.jpg" alt="Moment 4">
+            </div>
+            <div class="photo-container" data-description="Celebrating our little wins!">
+                <img src="moment5.jpg" alt="Moment 5">
+            </div>
+        </div>
     </div>
-    <button class="back-button" onclick="goBack()">Back to Home</button>
 
-    <!-- Animations Container -->
-    <div id="animations"></div>
+    <!-- Modal for description -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h2>Moment Description</h2>
+            <p id="descriptionText"></p>
+        </div>
+    </div>
 
     <script>
-        function goBack() {
-            window.history.back();
-        }
+        // JavaScript to handle modal functionality
+        const modal = document.getElementById("modal");
+        const closeModal = document.getElementById("closeModal");
+        const descriptionText = document.getElementById("descriptionText");
+        const photoContainers = document.querySelectorAll(".photo-container");
+        const body = document.body;
 
-        // Animation Logic
-        function createEffect(type, count, container) {
-            for (let i = 0; i < count; i++) {
-                const effect = document.createElement('div');
-                effect.classList.add(type);
-                effect.style.left = Math.random() * 100 + 'vw';
-                effect.style.top = Math.random() * 50 + 'vh';
-                effect.style.animationDuration = Math.random() * 2 + 2 + 's';
-                container.appendChild(effect);
+        photoContainers.forEach(container => {
+            container.addEventListener("click", () => {
+                const description = container.getAttribute("data-description");
+                descriptionText.textContent = description;
+                modal.classList.add("active");
+                body.classList.add("blur");
+            });
+        });
 
-                // Remove element after animation ends
-                effect.addEventListener('animationend', () => {
-                    container.removeChild(effect);
-                });
+        closeModal.addEventListener("click", () => {
+            modal.classList.remove("active");
+            body.classList.remove("blur");
+        });
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.remove("active");
+                body.classList.remove("blur");
             }
-        }
-
-        // Initialize animations
-        window.onload = function () {
-            const animationsContainer = document.getElementById('animations');
-            setInterval(() => createEffect('sparkle', 10, animationsContainer), 1000);
-            setInterval(() => createEffect('flower', 5, animationsContainer), 1500);
-        };
+        });
     </script>
 </body>
 </html>
-
