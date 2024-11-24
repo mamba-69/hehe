@@ -16,21 +16,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
-        /* Puzzle Grid Styling */
+        /* Puzzle Grid Styling (4x3) */
         #puzzle {
             display: grid;
-            grid-template-columns: repeat(6, 100px);
-            grid-template-rows: repeat(6, 100px);
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(4, 100px);
             gap: 5px;
             border: 2px solid #333;
+            position: relative;
         }
 
         .puzzle-piece {
             width: 100px;
             height: 100px;
-            background-size: 600px 600px; /* Size of the full image */
+            background-size: 300px 400px; /* Adjusted for the 4x3 grid */
             cursor: pointer;
             border: 1px solid #333;
             box-sizing: border-box;
@@ -69,13 +71,47 @@
             }
         }
 
-        /* Additional Styling for Drag and Drop */
-        .dragging {
-            opacity: 0.5;
+        /* Back Arrow Styling */
+        #back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            z-index: 200;
+        }
+
+        /* Background blur */
+        .blurred {
+            filter: blur(5px);
+        }
+
+        /* Reply Button after going back */
+        #reply-button {
+            display: none;
+            position: fixed;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background: #ff5e78;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #reply-button:hover {
+            background: #ff324b;
         }
     </style>
 </head>
 <body>
+
+    <!-- Back Arrow -->
+    <div id="back-arrow" onclick="goBack()">←</div>
 
     <!-- Puzzle Grid -->
     <div id="puzzle"></div>
@@ -84,23 +120,29 @@
     <div id="gift-box-modal">
         <div id="gift-box"></div>
         <p>Congratulations! Here's your surprise! 🥳</p>
-        <img src="your-image.jpg" alt="Message" style="width: 100%; margin-top: 20px;">
+        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=6xm5ch34&raw=1" alt="Message" style="width: 100%; margin-top: 20px;">
         <p>Your special message goes here.</p>
     </div>
+
+    <!-- Reply Button -->
+    <button id="reply-button" onclick="goBack()">Reply</button>
 
     <script>
         const puzzle = document.getElementById('puzzle');
         const giftBoxModal = document.getElementById('gift-box-modal');
         const giftBox = document.getElementById('gift-box');
+        const backArrow = document.getElementById('back-arrow');
+        const replyButton = document.getElementById('reply-button');
         const pieces = [];
         const imageUrl = 'https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=11sy1eyz&raw=1'; // The image to be scrambled
+        let isPuzzleComplete = false;
 
         // Generate puzzle pieces
         function generatePuzzle() {
-            for (let i = 0; i < 36; i++) {
+            for (let i = 0; i < 12; i++) {
                 const piece = document.createElement('div');
                 piece.classList.add('puzzle-piece');
-                piece.style.backgroundPosition = `-${(i % 6) * 100}px -${Math.floor(i / 6) * 100}px`;
+                piece.style.backgroundPosition = `-${(i % 3) * 100}px -${Math.floor(i / 3) * 100}px`;  // 3 columns and 4 rows
                 piece.setAttribute('draggable', true);
                 piece.dataset.index = i;
                 puzzle.appendChild(piece);
@@ -151,8 +193,12 @@
         // Check if puzzle is complete
         function checkPuzzleCompletion() {
             const isComplete = pieces.every(piece => piece.style.backgroundPosition === piece.dataset.correctPosition);
-            if (isComplete) {
+            if (isComplete && !isPuzzleComplete) {
+                isPuzzleComplete = true;
                 showGiftBox();
+                document.body.classList.add('blurred'); // Blur background
+                backArrow.style.display = 'none'; // Hide the back arrow when the puzzle is complete
+                replyButton.style.display = 'block'; // Show reply button
             }
         }
 
@@ -165,6 +211,11 @@
         giftBox.addEventListener('click', () => {
             giftBoxModal.style.display = 'none'; // Hide the modal after clicking the gift box
         });
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
 
         // Initialize puzzle on page load
         window.onload = generatePuzzle;
