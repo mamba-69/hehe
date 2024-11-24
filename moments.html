@@ -224,21 +224,41 @@
 
     <!-- Collage Container -->
     <div class="collage">
-        <img class="small" src="https://www.dropbox.com/scl/fi/6ensit49xrcx4fr5xhs8n/418568937_321339057590751_3985429228521046828_n.jpg?rlkey=3dq49g6vggu5rx9z0tdx7kdvq&st=qarao1gm&raw=1" alt="Moment 1" data-description="Those hands which never got deattached.">
-        <img class="small" src="https://www.dropbox.com/scl/fi/x8owh6h4vuly36q5i9vqd/462579401_1796250054480007_8683186961192194360_n.png?rlkey=4umgzr7kvcwr1a3z9inbbqsyv&st=nt162kam&raw=1" alt="Moment 2" data-description="Those arms will will never leave u alone.">
-        <img class="large" src="https://www.dropbox.com/scl/fi/0d79fau8m4dnqb60gr5pj/anish-manasvi.jpg?rlkey=rjmji37fhpfscoj52mkvrgen3&st=m8680250&raw=1" alt="Moment 3" data-description="Two pookies in one pic, Hayyyyyyyy🤭.">
-        <img class="large" src="https://www.dropbox.com/scl/fi/e1y95v37ywq95xbga1r4m/432716520_1078317660132255_297398027064931974_n.jpg?rlkey=dthd8566zt9xpl0xbzkln5mgw&st=9miqzyho&raw=1" alt="Moment 4" data-description="Side by side moving through whole life.">
+        <img class="small" src="https://www.dropbox.com/scl/fi/6ensit49xrcx4fr5xhs8n/418568937_321339057590751_3985429228521046828_n.jpg?rlkey=3dq49g6vggu5rx9z0tdx7kdvq&st=qarao1gm&raw=1" alt="Moment 1" data-description="Those hands which never got deattached." onclick="openModal(this)">
+        <img class="small" src="https://www.dropbox.com/scl/fi/5ajg7mh3sgjb31msgh1uu/462579401_1796250054480007_8683186961192194360_n-edited.png?rlkey=7tqv2xlbdij13m0ifmvwj0gx4&st=f9aqpskv&raw=1" alt="Moment 2" data-description="Those arms will will never leave u alone." onclick="openModal(this)">
+        <img class="large" src="https://www.dropbox.com/scl/fi/0d79fau8m4dnqb60gr5pj/anish-manasvi.jpg?rlkey=rjmji37fhpfscoj52mkvrgen3&st=m8680250&raw=1" alt="Moment 3" data-description="Two pookies in one pic, Hayyyyyyyy🤭." onclick="openModal(this)">
+        <img class="large" src="https://www.dropbox.com/scl/fi/e1y95v37ywq95xbga1r4m/432716520_1078317660132255_297398027064931974_n.jpg?rlkey=dthd8566zt9xpl0xbzkln5mgw&st=9miqzyho&raw=1" alt="Moment 4" data-description="Side by side moving through whole life." onclick="openModal(this)">
     </div>
 
     <!-- Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">×</button>
-            <h2>Picture Title</h2>
-            <p>Description goes here...</p>
+            <h2 id="modal-title">Image Description</h2>
+            <p id="modal-description">Description goes here...</p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Open Modal with Image Description
+        function openModal(imgElement) {
+            const modal = document.getElementById("modal");
+            const title = imgElement.alt;
+            const description = imgElement.getAttribute("data-description");
+
+            document.getElementById("modal-title").innerText = title;
+            document.getElementById("modal-description").innerText = description;
+
+            modal.classList.add("active");
+            document.body.classList.add("blur");
+        }
+
+        // Close Modal
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            modal.classList.remove("active");
+            document.body.classList.remove("blur");
+        }
+    </script>
 </body>
 </html>
