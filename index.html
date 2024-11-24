@@ -13,32 +13,31 @@
             height: 100vh;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
+            position: relative;
         }
 
-        /* Main content (hidden initially for portrait mode) */
+        /* Main Content Styling */
         #main-content {
             display: none;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             width: 100%;
+            height: 100%;
         }
 
-        #main-content h1 {
+        h1 {
             font-size: 2.5em;
             color: white;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
             margin-bottom: 20px;
         }
 
-        #main-content p {
-            font-size: 1.2em;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        /* Button styling */
         .button {
             padding: 15px 30px;
             font-size: 1.2em;
@@ -50,23 +49,33 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             transition: 0.3s;
+            margin: 10px;
         }
 
         .button:hover {
             background: #ff324b;
         }
 
-        /* Rotate screen animation */
+        /* Rotate Screen Animation */
         #rotate-screen {
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
             text-align: center;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         #rotate-screen img {
             width: 150px;
-            animation: rotate 2s infinite;
+            animation: rotate 2s infinite ease-in-out;
         }
 
         #rotate-screen p {
@@ -90,16 +99,16 @@
     </style>
 </head>
 <body>
-    <!-- Rotate screen message -->
+    <!-- Rotate Screen Message -->
     <div id="rotate-screen">
-        <img src="rotate-icon.png" alt="Rotate Screen" />
-        <p>Please rotate your device for the best experience! 🌟</p>
+        <img src="https://www.dropbox.com/scl/fi/7wdfd7f21a27inj6rqqcs/responsive.png?rlkey=0wfj99um8jmoce56bxx1x4jzy&st=6c4a7m7i&raw=1" alt="Rotate Screen" />
+        <p>Rotate your device for the best experience!</p>
     </div>
 
-    <!-- Main content -->
+    <!-- Main Content -->
     <div id="main-content">
         <h1>Happy Birthday, My Love! 🎉💖</h1>
-        <p>You are the most beautiful flower in my garden of life. 🌸</p>
+        <button class="button" onclick="location.href='surprise.html'">Click for Surprise</button>
         <button class="button" onclick="location.href='moments.html'">Our Moments</button>
     </div>
 
