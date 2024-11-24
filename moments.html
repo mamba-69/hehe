@@ -5,61 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moments</title>
     <style>
+        /* General Page Styling */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f3e9dd, #f0c3b9);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-        }
-
-        .shelf-container {
             position: relative;
-            width: 90%;
-            max-width: 900px;
-            background: #6d4c41;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .shelf {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: #795548;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-            margin: 20px 0;
-            height: 160px;
+        /* Winter Themed Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.dropbox.com/scl/fi/bz28qnrgf7f8jxp5lhify/2274659-bigthumbnail.jpg?rlkey=hp9q20vnn01fq6pcrecj4l3l5&st=md99qmgb&raw=1') no-repeat center center/cover; /* Replace with an appropriate winter background image */
+            z-index: -3;
         }
 
+        /* Snow Animation */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Bookshelf Image */
+        .bookshelf-container {
+            position: relative;
+            width: 50%;
+            max-width: 300px;
+            margin: auto;
+            z-index: 1;
+        }
+
+        .bookshelf {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Images inside Bookshelf */
         .photo-container {
-            position: relative;
-            width: 120px;
-            height: 140px;
+            position: absolute;
+            width: 60px;
+            height: 60px;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
             cursor: pointer;
-            transform: translateY(10px);
             transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .photo-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
 
         .photo-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Positioning images inside bookshelf slots */
+        .slot1 {
+            top: 30px;
+            left: 20px;
+        }
+
+        .slot2 {
+            top: 150px;
+            left: 80px;
+        }
+
+        .slot3 {
+            top: 280px;
+            left: 20px;
+        }
+
+        .slot4 {
+            top: 410px;
+            left: 80px;
         }
 
         /* Modal styles */
@@ -69,7 +108,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
             align-items: center;
@@ -137,24 +176,27 @@
     </style>
 </head>
 <body>
-    <div class="shelf-container">
-        <!-- Bookshelf design -->
-        <div class="shelf">
-            <div class="photo-container" data-description="Our unforgettable dinner date.">
-                <img src="moment1.jpg" alt="Moment 1">
-            </div>
-            <div class="photo-container" data-description="Exploring the city streets together.">
-                <img src="moment2.jpg" alt="Moment 2">
-            </div>
-            <div class="photo-container" data-description="A beautiful evening by the beach.">
-                <img src="moment3.jpg" alt="Moment 3">
-            </div>
-            <div class="photo-container" data-description="This surprise brought us closer.">
-                <img src="moment4.jpg" alt="Moment 4">
-            </div>
-            <div class="photo-container" data-description="Celebrating our little wins!">
-                <img src="moment5.jpg" alt="Moment 5">
-            </div>
+    <!-- Snowflakes -->
+    <div class="snowflake" style="left: 10%; animation-duration: 5s;">❄</div>
+    <div class="snowflake" style="left: 30%; animation-duration: 6s;">❄</div>
+    <div class="snowflake" style="left: 50%; animation-duration: 4s;">❄</div>
+    <div class="snowflake" style="left: 70%; animation-duration: 7s;">❄</div>
+    <div class="snowflake" style="left: 90%; animation-duration: 3s;">❄</div>
+
+    <!-- Bookshelf Container -->
+    <div class="bookshelf-container">
+        <img src="https://www.dropbox.com/scl/fi/jtm8nq51qtpay9jh39dxi/BOOK-SHELF-8.webp?rlkey=m9u1pcchhz6krbzbr7ewz1m8r&st=o52qd96y&raw=1" alt="Bookshelf" class="bookshelf">
+        <div class="photo-container slot1" data-description="Our memorable vacation.">
+            <img src="moment1.jpg" alt="Moment 1">
+        </div>
+        <div class="photo-container slot2" data-description="Our first dinner together.">
+            <img src="moment2.jpg" alt="Moment 2">
+        </div>
+        <div class="photo-container slot3" data-description="A fun day at the park.">
+            <img src="moment3.jpg" alt="Moment 3">
+        </div>
+        <div class="photo-container slot4" data-description="A beautiful sunset we shared.">
+            <img src="moment4.jpg" alt="Moment 4">
         </div>
     </div>
 
