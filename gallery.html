@@ -112,18 +112,18 @@
 
         /* Gallery Container */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
             padding: 20px;
-            gap: 15px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         /* Gallery Images */
         .gallery img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
+            width: 100%;
+            height: auto;
             border-radius: 10px;
             cursor: pointer;
             transition: transform 0.3s ease;
@@ -145,12 +145,15 @@
             border-radius: 10px;
             padding: 20px;
             z-index: 5;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
         }
 
         /* Modal Content */
         .modal img {
-            max-width: 100%;
-            max-height: 400px;
+            width: 100%;
+            height: auto;
             display: block;
             margin: 0 auto;
         }
@@ -201,34 +204,34 @@
         <!-- Gallery Images -->
         <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 1">
         <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 2">
-        <img src="https://via.placeholder.com/150" alt="Image 3">
-        <img src="https://via.placeholder.com/150" alt="Image 4">
-        <img src="https://via.placeholder.com/150" alt="Image 5">
-        <img src="https://via.placeholder.com/150" alt="Image 6">
-        <img src="https://via.placeholder.com/150" alt="Image 7">
-        <img src="https://via.placeholder.com/150" alt="Image 8">
-        <img src="https://via.placeholder.com/150" alt="Image 9">
-        <img src="https://via.placeholder.com/150" alt="Image 10">
-        <img src="https://via.placeholder.com/150" alt="Image 11">
-        <img src="https://via.placeholder.com/150" alt="Image 12">
-        <img src="https://via.placeholder.com/150" alt="Image 13">
-        <img src="https://via.placeholder.com/150" alt="Image 14">
-        <img src="https://via.placeholder.com/150" alt="Image 15">
-        <img src="https://via.placeholder.com/150" alt="Image 16">
-        <img src="https://via.placeholder.com/150" alt="Image 17">
-        <img src="https://via.placeholder.com/150" alt="Image 18">
-        <img src="https://via.placeholder.com/150" alt="Image 19">
-        <img src="https://via.placeholder.com/150" alt="Image 20">
-        <img src="https://via.placeholder.com/150" alt="Image 21">
-        <img src="https://via.placeholder.com/150" alt="Image 22">
-        <img src="https://via.placeholder.com/150" alt="Image 23">
-        <img src="https://via.placeholder.com/150" alt="Image 24">
-        <img src="https://via.placeholder.com/150" alt="Image 25">
-        <img src="https://via.placeholder.com/150" alt="Image 26">
-        <img src="https://via.placeholder.com/150" alt="Image 27">
-        <img src="https://via.placeholder.com/150" alt="Image 28">
-        <img src="https://via.placeholder.com/150" alt="Image 29">
-        <img src="https://via.placeholder.com/150" alt="Image 30">
+        <img src="https://via.placeholder.com/400x300" alt="Image 3">
+        <img src="https://via.placeholder.com/400x300" alt="Image 4">
+        <img src="https://via.placeholder.com/400x300" alt="Image 5">
+        <img src="https://via.placeholder.com/400x300" alt="Image 6">
+        <img src="https://via.placeholder.com/400x300" alt="Image 7">
+        <img src="https://via.placeholder.com/400x300" alt="Image 8">
+        <img src="https://via.placeholder.com/400x300" alt="Image 9">
+        <img src="https://via.placeholder.com/400x300" alt="Image 10">
+        <img src="https://via.placeholder.com/400x300" alt="Image 11">
+        <img src="https://via.placeholder.com/400x300" alt="Image 12">
+        <img src="https://via.placeholder.com/400x300" alt="Image 13">
+        <img src="https://via.placeholder.com/400x300" alt="Image 14">
+        <img src="https://via.placeholder.com/400x300" alt="Image 15">
+        <img src="https://via.placeholder.com/400x300" alt="Image 16">
+        <img src="https://via.placeholder.com/400x300" alt="Image 17">
+        <img src="https://via.placeholder.com/400x300" alt="Image 18">
+        <img src="https://via.placeholder.com/400x300" alt="Image 19">
+        <img src="https://via.placeholder.com/400x300" alt="Image 20">
+        <img src="https://via.placeholder.com/400x300" alt="Image 21">
+        <img src="https://via.placeholder.com/400x300" alt="Image 22">
+        <img src="https://via.placeholder.com/400x300" alt="Image 23">
+        <img src="https://via.placeholder.com/400x300" alt="Image 24">
+        <img src="https://via.placeholder.com/400x300" alt="Image 25">
+        <img src="https://via.placeholder.com/400x300" alt="Image 26">
+        <img src="https://via.placeholder.com/400x300" alt="Image 27">
+        <img src="https://via.placeholder.com/400x300" alt="Image 28">
+        <img src="https://via.placeholder.com/400x300" alt="Image 29">
+        <img src="https://via.placeholder.com/400x300" alt="Image 30">
     </div>
 
     <div class="blurred-bg"></div>
@@ -245,24 +248,25 @@
         const modalImg = modal.querySelector('img');
         const modalDesc = modal.querySelector('p');
         const blurredBg = document.querySelector('.blurred-bg');
-        const closeModal = document.querySelector('.close-btn');
+        const closeBtn = document.querySelector('.close-btn');
 
-        images.forEach((img, index) => {
+        images.forEach(img => {
             img.addEventListener('click', () => {
                 modal.style.display = 'block';
                 blurredBg.style.display = 'block';
                 modalImg.src = img.src;
-                modalDesc.textContent = `This is image ${index + 1}`;
+                modalDesc.textContent = img.alt;
             });
         });
 
-        closeModal.addEventListener('click', () => {
+        closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
             blurredBg.style.display = 'none';
         });
     </script>
 </body>
 </html>
+
 
 
 
