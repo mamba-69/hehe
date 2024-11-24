@@ -32,10 +32,11 @@
         .puzzle-piece {
             width: 100px;
             height: 100px;
-            background-size: 500px 400px; /* Adjusted for 5 columns and 4 rows */
             cursor: pointer;
             border: 1px solid #333;
             box-sizing: border-box;
+            background-image: url('https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=11sy1eyz&raw=1'); /* Set the image for puzzle pieces */
+            background-size: 500px 400px; /* Adjusted for 5 columns and 4 rows */
         }
 
         /* Modal Styling */
@@ -120,7 +121,7 @@
     <div id="gift-box-modal">
         <div id="gift-box"></div>
         <p>Congratulations! Here's your surprise! 🥳</p>
-        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=6xm5ch34&raw=1" alt="Message" style="width: 100%; margin-top: 20px;">
+        <img src="https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=yhjjdrai&raw=1" alt="Message" style="width: 100%; margin-top: 20px;">
         <p>Your special message goes here.</p>
     </div>
 
@@ -134,7 +135,7 @@
         const backArrow = document.getElementById('back-arrow');
         const replyButton = document.getElementById('reply-button');
         const pieces = [];
-        const imageUrl = 'https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=6xm5ch34&raw=1'; // The image to be scrambled
+        const imageUrl = 'https://www.dropbox.com/scl/fi/akb3ltvbchdfkf9hphim4/418711361_954044255643615_5453204934303961164_n.jpg?rlkey=wnmcd7w3jd8z55h6z1tj7foji&st=11sy1eyz&raw=1'; // The image to be scrambled
         let isPuzzleComplete = false;
 
         // Generate puzzle pieces
