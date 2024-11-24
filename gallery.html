@@ -155,7 +155,8 @@
 
         /* Modal Content */
         .modal img {
-            width: 100%;
+            width: auto;
+            max-width: 80%; /* Limit the size of the image */
             height: auto;
             display: block;
             margin: 0 auto;
@@ -165,6 +166,7 @@
             text-align: center;
             margin-top: 15px;
             font-size: 16px;
+            margin-bottom: 10px;
         }
 
         /* Close Button */
@@ -213,7 +215,7 @@
         <img src="https://www.dropbox.com/scl/fi/e9kpjcx0ex4u86gxuxkzb/467167847_558042733605739_2388996369114830820_n.png?rlkey=6r9y2xxtqsmargpt74ko27qme&st=sod2nq3e&raw=1" alt="Image 6">
         <img src="https://www.dropbox.com/scl/fi/k3a98wx1hoqjomu9ordin/467381412_934489351928170_1008943632770178234_n.png?rlkey=bxv0vhbqg841vk4h8qvb4wlzn&st=sfgd5kzf&raw=1" alt="Image 7">
         <img src="https://www.dropbox.com/scl/fi/x7t7k13yfqz5jpsslved7/465747553_1083589650114218_4061458041450549263_n.png?rlkey=l1zh6eg2f53tgzw2sflfgx3xj&st=xyz1m2tu&raw=1" alt="Image 8">
-        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozfl237jq8yh&st=tlt8sihs&raw=1" alt="Image 9">
+        <img src="https://www.dropbox.com/scl/fi/7r8s9lez7hy283vhbt69a/465503335_447487181417683_5666822542636803589_n.png?rlkey=r2k4nifg505fwozxl55ch8n2y&st=fhyxvfdv&raw=1" alt="Image 9">
         <img src="https://www.dropbox.com/scl/fi/lc1ududp3zdb2xjfzl7lp/465013952_1092939235544809_2430535516430396996_n.png?rlkey=2y50581bq4htgp5nv93s7g4mk&st=gqz3g11b&raw=1" alt="Image 10">
         <img src="https://via.placeholder.com/400x300" alt="Image 11">
         <img src="https://via.placeholder.com/400x300" alt="Image 12">
@@ -237,34 +239,45 @@
         <img src="https://via.placeholder.com/400x300" alt="Image 30">
     </div>
 
-    <div class="blurred-bg"></div>
-
-    <div class="modal">
-        <button class="close-btn">&times;</button>
-        <img src="" alt="Modal Image">
-        <p>Image Description Here</p>
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <img id="modalImage" src="" alt="Modal Image">
+        <p id="modalText"></p>
     </div>
 
+    <!-- Blurred Background -->
+    <div id="blurredBackground" class="blurred-bg"></div>
+
     <script>
-        const images = document.querySelectorAll('.gallery img');
-        const modal = document.querySelector('.modal');
-        const modalImg = modal.querySelector('img');
-        const modalDesc = modal.querySelector('p');
-        const blurredBg = document.querySelector('.blurred-bg');
-        const closeBtn = modal.querySelector('.close-btn');
+        // Open Modal Function
+        function openModal(imageSrc, textContent) {
+            var modal = document.getElementById("myModal");
+            var modalImage = document.getElementById("modalImage");
+            var modalText = document.getElementById("modalText");
+            var blurredBackground = document.getElementById("blurredBackground");
 
-        images.forEach(img => {
-            img.addEventListener('click', () => {
-                modal.style.display = 'block';
-                blurredBg.style.display = 'block';
-                modalImg.src = img.src;
-                modalDesc.textContent = img.alt;
+            modalImage.src = imageSrc;
+            modalText.textContent = textContent;
+            modal.style.display = "block";
+            blurredBackground.style.display = "block";
+        }
+
+        // Close Modal Function
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            var blurredBackground = document.getElementById("blurredBackground");
+
+            modal.style.display = "none";
+            blurredBackground.style.display = "none";
+        }
+
+        // Event Listeners for Gallery Images
+        const images = document.querySelectorAll(".gallery img");
+        images.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                openModal(img.src, "This is image " + (index + 1));
             });
-        });
-
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            blurredBg.style.display = 'none';
         });
     </script>
 </body>
