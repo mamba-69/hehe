@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise Gift Boxes</title>
+    <title>Gallery</title>
     <link href="https://fonts.googleapis.com/css2?family=Amsterline&display=swap" rel="stylesheet">
     <style>
         body {
@@ -11,107 +11,98 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            background: url('https://www.dropbox.com/scl/fi/nzvommve8pz4ks8l6wbmf/pexels-pixabay-355887.jpg?rlkey=picgqg4mpusga1ohgu032el4j&st=6pmt6s9h&raw=1') no-repeat center center/cover;
-            position: relative;
+            background: linear-gradient(to bottom, #8b4513, #4e260b);
             overflow: hidden;
+            color: white;
         }
 
-        .background-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            filter: blur(5px);
-            pointer-events: none;
-            z-index: -1;
-            transition: filter 0.3s ease-in-out;
+        h1 {
+            margin-top: 20px;
+            font-size: 3rem;
         }
 
-        .box-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 30px;
-            justify-items: center;
-            padding: 20px;
-            z-index: 1;
-        }
-
-        .gift-box {
-            width: 100px;
-            height: 100px;
-            background-color: #f7c4c4;
+        .gallery-container {
             display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 1200px;
+            margin: 20px auto;
             justify-content: center;
-            align-items: center;
+            z-index: 2; /* Keep above chocolates */
+        }
+
+        .gallery-item {
+            width: calc(33.33% - 20px);
+            margin-bottom: 15px;
+            overflow: hidden;
             cursor: pointer;
-            border: 2px solid #c29c9c;
-            border-radius: 10px;
             position: relative;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
             transition: transform 0.3s ease;
         }
 
-        .gift-box:hover {
-            transform: scale(1.1);
-        }
-
-        .gift-box img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        .message {
-            position: absolute;
-            top: -20px;
-            font-size: 1.2em;
-            text-align: center;
-            color: white;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
+        .gallery-item img {
             width: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            height: auto;
+            display: block;
+            border-radius: 10px;
         }
 
-        .image-modal {
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.5s ease;
+            z-index: 10;
         }
 
-        .image-modal.active {
+        .modal.active {
             display: flex;
         }
 
-        .image-modal img {
+        .modal-content {
+            position: relative;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
             max-width: 80%;
             max-height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 60%;
+            margin-bottom: 20px;
             border-radius: 10px;
-            opacity: 0;
-            animation: fadeInImage 1s forwards;
+        }
+
+        .modal-content .description {
+            font-size: 1.2em;
+            color: #333;
         }
 
         .close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             font-size: 1.5em;
             background-color: transparent;
             border: none;
-            color: white;
             cursor: pointer;
         }
 
@@ -119,107 +110,104 @@
             color: red;
         }
 
-        .go-back {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 1.5em;
-            text-decoration: none;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 10px 20px;
+        /* Blur Effect */
+        .blur {
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        /* Falling Chocolates Animation */
+        .chocolate {
+            position: absolute;
+            width: 20px;
+            height: 40px;
+            background: #4e260b;
             border-radius: 5px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            animation: fall linear infinite;
+            z-index: 1;
         }
 
-        .go-back:hover {
-            background-color: rgba(255, 0, 0, 0.8);
-        }
-
-        /* Keyframes for fade-in effects */
-        @keyframes fadeIn {
+        @keyframes fall {
             from {
-                opacity: 0;
+                transform: translateY(-100%);
             }
             to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInImage {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
+                transform: translateY(100vh);
             }
         }
     </style>
 </head>
 <body>
-    <div class="background-container"></div>
 
-    <div class="box-container">
-        <!-- Generate 12 Gift Boxes -->
-        <script>
-            for (let i = 1; i <= 12; i++) {
-                document.write(`
-                    <div class="gift-box" onclick="openGiftBox(${i})">
-                        <div class="message" id="message${i}">Surprise ${i}!</div>
-                        <img src="https://www.dropbox.com/scl/fi/94f2b6gplqs0u9blu8r6v/pngwing.com.png?rlkey=oe0j0wlzvst67hjlmhjxfcwcu&st=l70v0t8j&raw=1" alt="Gift Box ${i}">
-                    </div>
-                `);
-            }
-        </script>
+    <h1>Our Sweetest Memories</h1>
+    <div class="gallery-container" id="galleryContainer">
+        <!-- Images are dynamically added using JavaScript -->
     </div>
 
-    <!-- Image Modal -->
-    <div class="image-modal" id="imageModal">
-        <button class="close-btn" onclick="closeModal()">×</button>
-        <img id="modalImage" src="" alt="Image">
+    <!-- Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <img id="modalImage" src="" alt="Gallery Image">
+            <p class="description" id="modalDescription"></p>
+        </div>
     </div>
-
-    <!-- Go Back Button -->
-    <a class="go-back" href="index.html">← Back to Main Page</a>
 
     <script>
-        const modal = document.getElementById("imageModal");
-        const modalImage = document.getElementById("modalImage");
-        const body = document.body;
-
-        // Add URLs of your images for each box
-        const imageUrls = [
-            "https://www.dropbox.com/scl/fi/a19yqp66du4x6tkmhihf9/462642702_1577113209600697_202939817461201485_n.png?rlkey=rrdufhz0piavxmukp88hwnh1h&st=d7lsiiud&raw=1",
-            "https://example.com/image2.jpg",
-            "https://example.com/image3.jpg",
-            "https://example.com/image4.jpg",
-            "https://example.com/image5.jpg",
-            "https://example.com/image6.jpg",
-            "https://example.com/image7.jpg",
-            "https://example.com/image8.jpg",
-            "https://example.com/image9.jpg",
-            "https://example.com/image10.jpg",
-            "https://example.com/image11.jpg",
-            "https://example.com/image12.jpg"
+        // List of images and their descriptions
+        const images = [
+            { src: 'https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1', desc: 'This is a special memory #1' },
+            { src: 'https://via.placeholder.com/300x400?text=Image2', desc: 'This is a special memory #2' },
+            { src: 'https://via.placeholder.com/300x400?text=Image3', desc: 'This is a special memory #3' },
+            // Add more image URLs and descriptions (30 in total)
         ];
 
-        function openGiftBox(boxId) {
-            const message = document.getElementById(`message${boxId}`);
-            message.style.opacity = 1;
+        // Dynamically populate the gallery
+        const galleryContainer = document.getElementById('galleryContainer');
+        images.forEach((image, index) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add('gallery-item');
+            galleryItem.innerHTML = `
+                <img src="${image.src}" alt="Image ${index + 1}" onclick="openModal(${index})">
+            `;
+            galleryContainer.appendChild(galleryItem);
+        });
 
-            setTimeout(() => {
-                modalImage.src = imageUrls[boxId - 1];
-                modal.classList.add("active");
-                document.querySelector(".background-container").style.filter = "blur(5px)";
-            }, 1000);
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalDescription = document.getElementById('modalDescription');
+
+        function openModal(index) {
+            modalImage.src = images[index].src;
+            modalDescription.textContent = images[index].desc;
+            modal.classList.add('active');
+            galleryContainer.classList.add('blur'); // Add blur effect
         }
 
         function closeModal() {
-            modal.classList.remove("active");
-            document.querySelector(".background-container").style.filter = "none";
+            modal.classList.remove('active');
+            galleryContainer.classList.remove('blur'); // Remove blur effect
         }
+
+        // Falling Chocolates Animation
+        function createChocolate() {
+            const chocolate = document.createElement('div');
+            chocolate.classList.add('chocolate');
+            chocolate.style.left = Math.random() * 100 + "vw";
+            chocolate.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(chocolate);
+
+            // Remove chocolate after animation ends
+            chocolate.addEventListener('animationend', () => {
+                chocolate.remove();
+            });
+        }
+
+        // Generate chocolates continuously
+        setInterval(createChocolate, 200);
     </script>
+
 </body>
 </html>
+
