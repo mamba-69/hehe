@@ -32,10 +32,13 @@
             height: 100%;
         }
 
-        h1 {
+       h1 {
             font-size: 2.5em;
-            color: gold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            color: transparent; /* Set text color to transparent for gradient overlay */
+            background: linear-gradient(to right, #b76e79, #f7cac9, #d8a7b1); /* Rose gold gradient */
+            -webkit-background-clip: text; /* Ensures the gradient applies to text */
+            background-clip: text;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
             margin-bottom: 20px;
         }
 
