@@ -6,16 +6,21 @@
     <title>Fancy Collage Gallery</title>
     <style>
         /* General Reset */
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            overflow: auto; /* Enable scrolling */
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #1e3c72, #2a5298, #3b5998);
-            height: 100%;
+            box-sizing: border-box;
         }
 
-        /* Background with Shooting Stars */
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            overflow-x: hidden;
+        }
+
+        /* Shooting Stars Background */
         #background {
             position: fixed;
             top: 0;
@@ -26,19 +31,11 @@
             overflow: hidden;
         }
 
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            animation: twinkle 20s infinite;
-        }
-
         .shooting-stars {
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: -1;
         }
 
         @keyframes shootStar {
@@ -51,50 +48,74 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(1200px) translateX(-800px);
+                transform: translateY(1000px) translateX(-300px);
             }
         }
 
-        .shooting-stars::before, .shooting-stars::after {
-            content: '';
+        .shooting-stars div {
             position: absolute;
-            top: -100px;
-            width: 3px;
-            height: 150px;
+            width: 5px;
+            height: 100px;
             background: white;
             opacity: 0.8;
-            animation: shootStar 7s linear infinite;
+            animation: shootStar 5s linear infinite;
         }
 
-        .shooting-stars::before {
-            left: 30%;
+        .shooting-stars div:nth-child(1) {
+            top: -50px;
+            left: 20%;
+            animation-delay: 1s;
         }
 
-        .shooting-stars::after {
-            left: 70%;
+        .shooting-stars div:nth-child(2) {
+            top: -50px;
+            left: 50%;
+            animation-delay: 2s;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        .shooting-stars div:nth-child(3) {
+            top: -50px;
+            left: 80%;
+            animation-delay: 3s;
         }
 
-        /* Collage Styling */
+        /* Back Arrow */
+        .back-arrow {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 50%;
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Gallery */
         .gallery {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 5px;
             padding: 20px;
-            max-width: 100%;
-            max-height: 100%;
+            justify-content: center;
             overflow-y: auto;
+            margin: 50px auto;
+            max-width: 90%;
         }
 
         .gallery img {
-            width: 300px; /* Maintain the original size of the images */
+            flex: 1 1 auto;
             height: auto;
-            border-radius: 8px;
+            max-width: 300px;
             cursor: pointer;
+            border-radius: 5px;
             transition: transform 0.3s ease;
         }
 
@@ -102,72 +123,68 @@
             transform: scale(1.05);
         }
 
-        /* Modal Styling */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
+            width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            width: 300px;
-            animation: fadeIn 0.5s ease;
-            z-index: 10;
-        }
-
-        .modal p {
-            margin: 0;
-            font-size: 16px;
+            z-index: 20;
             text-align: center;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal p {
+            font-size: 18px;
+            margin: 20px 0;
         }
 
-        /* Close Button Styling */
-        .close-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
+        .modal .close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
             background: black;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            text-align: center;
+            font-size: 20px;
             cursor: pointer;
-            z-index: 15;
         }
 
-        /* Blurred Background */
+        /* Blur Background */
         .blurred-bg {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(5px);
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 5;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 15;
         }
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-arrow">&larr;</a>
+
     <div id="background">
-        <div class="stars"></div>
-        <div class="shooting-stars"></div>
+        <div class="shooting-stars">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 
     <div class="gallery">
-        <!-- Updated with your custom image URLs (30 images) -->
+        <!-- Add your image URLs here -->
         <img src="https://www.dropbox.com/scl/fi/nzrtk3cv6ngeb1mf2snx3/467464058_893549606285536_1589891712593959421_n.png?rlkey=dpm065ffypxd2eznuxo0p73v7&st=81ov5pki&raw=1" alt="Image 1">
         <img src="https://www.dropbox.com/scl/fi/jdurped58evuj8v1rdnla/flowers-heart.jpg?rlkey=lmppp8s3t4e4j5t8v33408qdq&st=hq8ul3k1&raw=1" alt="Image 2">
         <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=dd3y6pbp&raw=1" alt="Image 3">
@@ -198,61 +215,34 @@
         <img src="https://www.dropbox.com/scl/fi/xu9bs23xxtimkvl1stgpz/27th_image.jpg?raw=1" alt="Image 28">
         <img src="https://www.dropbox.com/scl/fi/k5ln93emwxx2chx3rmx4p/28th_image.jpg?raw=1" alt="Image 29">
         <img src="https://www.dropbox.com/scl/fi/s7lm9zpcggb5l9m8gdjb9/29th_image.jpg?raw=1" alt="Image 30">
+        <!-- Repeat for 30 images -->
     </div>
 
-    <!-- Modal Window -->
-    <div id="modal" class="modal">
-        <p id="modal-text">Description of the image will appear here.</p>
+    <div class="blurred-bg"></div>
+
+    <div class="modal">
+        <button class="close-btn">&times;</button>
+        <p>Image Description Here</p>
     </div>
-
-    <!-- Blurred Background -->
-    <div id="blurred-bg" class="blurred-bg"></div>
-
-    <!-- Close Button -->
-    <button id="close-btn" class="close-btn">&times;</button>
 
     <script>
-        // Get all images in the gallery
         const images = document.querySelectorAll('.gallery img');
-        const modal = document.getElementById('modal');
-        const modalText = document.getElementById('modal-text');
-        const closeBtn = document.getElementById('close-btn');
-        const blurredBg = document.getElementById('blurred-bg');
+        const modal = document.querySelector('.modal');
+        const modalText = modal.querySelector('p');
+        const blurredBg = document.querySelector('.blurred-bg');
+        const closeModalBtn = modal.querySelector('.close-btn');
 
-        // Array of descriptions for each image
-        const descriptions = [
-            "This is Image 1", "This is Image 2", "This is Image 3", 
-            "This is Image 4", "This is Image 5", "This is Image 6",
-            "This is Image 7", "This is Image 8", "This is Image 9",
-            "This is Image 10", "This is Image 11", "This is Image 12",
-            "This is Image 13", "This is Image 14", "This is Image 15",
-            "This is Image 16", "This is Image 17", "This is Image 18",
-            "This is Image 19", "This is Image 20", "This is Image 21",
-            "This is Image 22", "This is Image 23", "This is Image 24",
-            "This is Image 25", "This is Image 26", "This is Image 27",
-            "This is Image 28", "This is Image 29", "This is Image 30"
-        ];
-
-        // Add event listener to each image
-        images.forEach((image, index) => {
-            image.addEventListener('click', () => {
-                // Show modal with description text
+        images.forEach(img => {
+            img.addEventListener('click', () => {
                 modal.style.display = 'block';
-                modalText.innerText = descriptions[index];
-                blurredBg.style.display = 'block'; // Show blurred background
+                blurredBg.style.display = 'block';
+                modalText.textContent = img.alt;
             });
         });
 
-        // Close the modal when close button is clicked
-        closeBtn.addEventListener('click', () => {
+        closeModalBtn.addEventListener('click', () => {
             modal.style.display = 'none';
-            blurredBg.style.display = 'none'; // Hide blurred background
-        });
-
-        // Close modal when clicking on blurred background
-        blurredBg.addEventListener('click', () => {
-            modal.style.display = 'none';
-            blurredBg.style.display = 'none'; // Hide blurred background
+            blurredBg.style.display = 'none';
         });
     </script>
 </body>
