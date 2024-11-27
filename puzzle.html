@@ -16,12 +16,14 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
         }
 
         h1 {
             color: white;
             font-size: 2rem;
             margin-bottom: 20px;
+            z-index: 1;
         }
 
         .game-container {
@@ -132,11 +134,22 @@
             0% { transform: translateY(-50px); }
             100% { transform: translateY(100vh); }
         }
+
+        .restart-btn {
+            display: none;
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Let's Play Mindu-Chokdi</h1>
+    <h1 id="game-heading">Let's Play Mindu-Chokdi</h1>
 
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
@@ -165,17 +178,16 @@
 
     <div class="falling-stars" id="falling-stars"></div>
 
+    <button class="restart-btn" id="restart-btn">Restart</button>
+
     <script>
         const cells = document.querySelectorAll('.cell');
         const giftBox = document.getElementById('gift-box');
         const messageBox = document.getElementById('message-box');
-        const goBackButton = document.getElementById('go-back');
-        const replayButton = document.getElementById('replay-button');
         const gameContainer = document.getElementById('game-container');
         const fallingStars = document.getElementById('falling-stars');
-
-        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
-        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
+        const restartButton = document.getElementById('restart-btn');
+        const gameHeading = document.getElementById('game-heading');
         let board = ['', '', '', '', '', '', '', '', ''];
         let isGameOver = false;
 
@@ -184,7 +196,7 @@
                 const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
                 const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 board[randomIndex] = 'O';
-                cells[randomIndex].style.backgroundImage = `url('${botImage}')`;
+                cells[randomIndex].style.backgroundImage = `url('https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1')`;
                 checkWinner();
             }
         }
@@ -199,14 +211,17 @@
             winningCombos.forEach(([a, b, c]) => {
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
+                    gameHeading.style.display = 'none';
                     giftBox.style.display = 'block';
                     giftBox.classList.add('animate');
-                    gameContainer.style.display = 'none'; // Hide the grid
                     showFallingStars();
+                    messageBox.style.display = 'block';
                 }
             });
 
-            if (!board.includes('') && !isGameOver) isGameOver = true;
+            if (!board.includes('') && !isGameOver) {
+                restartButton.style.display = 'inline-block';
+            }
         }
 
         function showFallingStars() {
@@ -227,7 +242,7 @@
             const index = e.target.dataset.cellIndex;
             if (board[index] === '' && !isGameOver) {
                 board[index] = 'X';
-                e.target.style.backgroundImage = `url('${playerImage}')`;
+                e.target.style.backgroundImage = `url('https://www.dropbox.com/scl/fi/8xuonw3nywsu33d6e3ps9/logo2_png?rlkey=s9fyq3vo7rjmzuzj5hdtchcbj&raw=1')`;
                 checkWinner();
                 if (!isGameOver) botMove();
             }
@@ -241,12 +256,16 @@
             giftBox.style.display = 'none';
             fallingStars.innerHTML = '';
             fallingStars.style.opacity = 0;
+            restartButton.style.display = 'none';
+            gameHeading.style.display = 'block';
+            messageBox.style.display = 'none';
         }
 
         cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-        goBackButton.addEventListener('click', () => window.location.href = 'index.html');
-        replayButton.addEventListener('click', resetGame);
-
+        document.getElementById('go-back').addEventListener('click', () => window.location.href = 'index.html');
+        document.getElementById('replay-button').addEventListener('click', resetGame);
+        restartButton.addEventListener('click', resetGame);
     </script>
 </body>
 </html>
+
