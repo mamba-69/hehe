@@ -15,6 +15,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
 
         .game-container {
@@ -69,22 +76,17 @@
             width: 300px;
         }
 
-       #message-box img {
-    width: 100px;
-    height: 100px;
-    border-radius: 15px; /* Adjust this value to get the desired curve */
-    margin: 20px 0;
-    object-fit: cover; /* Ensures the image doesn't distort */
-}
-
+        #message-box img {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            margin: 20px 0;
+            object-fit: cover;
+        }
 
         #message-box p {
             margin: 20px 0;
             font-size: 1rem;
-        }
-
-        .blur {
-            filter: blur(5px);
         }
 
         .buttons {
@@ -106,9 +108,35 @@
         .button:hover {
             background: #ff324b;
         }
+
+        .falling-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .falling-star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: yellow;
+            border-radius: 50%;
+            animation: falling 3s infinite linear;
+        }
+
+        @keyframes falling {
+            0% { transform: translateY(-50px); }
+            100% { transform: translateY(100vh); }
+        }
     </style>
 </head>
 <body>
+
+    <h1>Let's Play Mindu-Chokdi</h1>
 
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
@@ -135,6 +163,8 @@
         </div>
     </div>
 
+    <div class="falling-stars" id="falling-stars"></div>
+
     <script>
         const cells = document.querySelectorAll('.cell');
         const giftBox = document.getElementById('gift-box');
@@ -142,6 +172,7 @@
         const goBackButton = document.getElementById('go-back');
         const replayButton = document.getElementById('replay-button');
         const gameContainer = document.getElementById('game-container');
+        const fallingStars = document.getElementById('falling-stars');
 
         const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
         const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
@@ -153,7 +184,7 @@
                 const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
                 const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 board[randomIndex] = 'O';
-                cells[randomIndex].style.backgroundImage = url('${botImage}');
+                cells[randomIndex].style.backgroundImage = `url('${botImage}')`;
                 checkWinner();
             }
         }
@@ -171,43 +202,51 @@
                     giftBox.style.display = 'block';
                     giftBox.classList.add('animate');
                     gameContainer.style.display = 'none'; // Hide the grid
+                    showFallingStars();
                 }
             });
 
             if (!board.includes('') && !isGameOver) isGameOver = true;
         }
 
-        cells.forEach((cell, index) => {
-            cell.addEventListener('click', () => {
-                if (board[index] === '' && !isGameOver) {
-                    board[index] = 'X';
-                    cell.style.backgroundImage = url('${playerImage}');
-                    checkWinner();
-                    if (!isGameOver) botMove();
+        function showFallingStars() {
+            setTimeout(() => {
+                fallingStars.style.opacity = 1;
+                for (let i = 0; i < 50; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('falling-star');
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                    star.style.animationDelay = `${Math.random() * 2}s`;
+                    fallingStars.appendChild(star);
                 }
-            });
-        });
+            }, 500);
+        }
 
-        giftBox.addEventListener('click', () => {
-            messageBox.style.display = 'block';
-            gameContainer.classList.add('blur');
-        });
+        function handleCellClick(e) {
+            const index = e.target.dataset.cellIndex;
+            if (board[index] === '' && !isGameOver) {
+                board[index] = 'X';
+                e.target.style.backgroundImage = `url('${playerImage}')`;
+                checkWinner();
+                if (!isGameOver) botMove();
+            }
+        }
 
-        goBackButton.addEventListener('click', () => {
-            messageBox.style.display = 'none';
-            gameContainer.style.display = 'grid'; // Show the grid again
-            gameContainer.classList.remove('blur');
-        });
-
-        replayButton.addEventListener('click', () => {
+        function resetGame() {
             board = ['', '', '', '', '', '', '', '', ''];
-            cells.forEach(cell => (cell.style.backgroundImage = ''));
-            giftBox.style.display = 'none';
-            messageBox.style.display = 'none';
-            gameContainer.style.display = 'grid';
-            gameContainer.classList.remove('blur');
             isGameOver = false;
-        });
+            cells.forEach(cell => cell.style.backgroundImage = '');
+            gameContainer.style.display = 'grid';
+            giftBox.style.display = 'none';
+            fallingStars.innerHTML = '';
+            fallingStars.style.opacity = 0;
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        goBackButton.addEventListener('click', () => window.location.href = 'index.html');
+        replayButton.addEventListener('click', resetGame);
+
     </script>
 </body>
 </html>
