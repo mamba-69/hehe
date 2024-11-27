@@ -19,7 +19,7 @@
         }
 
         h1 {
-            color: #f4c6d7; /* Light Pink Color */
+            color: #ad3f7e; /* Dark Pink Color */
             font-size: 2.5rem;
             margin-bottom: 20px;
             text-align: center;
@@ -114,10 +114,36 @@
         .blur {
             filter: blur(5px);
         }
+
+        .hearts {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            animation: heartsAnimation 2s infinite;
+        }
+
+        @keyframes heartsAnimation {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1 id="game-heading">Let's Play... Mindu-Chokdi</h1>
+    <h1 id="game-heading">Let's Play... 🎮</h1>
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
         <div class="cell" data-cell-index="1"></div>
@@ -134,12 +160,16 @@
     <div id="message-box">
         <h2>Happy Birthday Winner! 🎉</h2>
         <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=pf0gfwsr&raw=1" alt="Her Picture">
-        <p>U know that u doesnt won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p>U know that u doesn't won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
         <p>.<b/> ~ Ur love ❣</b></p>
         <div class="buttons">
             <button class="button" id="go-back">Go Back</button>
             <button class="button" id="replay-button">Replay</button>
         </div>
+    </div>
+
+    <div class="hearts" id="hearts-animation">
+        <img src="https://www.dropbox.com/scl/fi/oj6htdxkbjm59o53lbnd5/heart-anim.png?rlkey=3fuosltg39e7aln74he24u9kc&st=pnqws4w8&raw=1" alt="Hearts Animation" width="100">
     </div>
 
     <script>
@@ -150,6 +180,7 @@
         const replayButton = document.getElementById('replay-button');
         const gameContainer = document.getElementById('game-container');
         const gameHeading = document.getElementById('game-heading');
+        const heartsAnimation = document.getElementById('hearts-animation');
 
         const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
         const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
@@ -168,31 +199,46 @@
 
         function checkWinner() {
             const winningCombos = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6] // Diagonals
             ];
 
-            winningCombos.forEach(([a, b, c]) => {
+            for (let combo of winningCombos) {
+                const [a, b, c] = combo;
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
-                    gameHeading.style.opacity = '0'; // Hide the heading
-                    giftBox.style.display = 'block';
-                    giftBox.classList.add('animate');
-                    gameContainer.style.display = 'none'; // Hide the grid
+                    setTimeout(() => {
+                        gameHeading.style.opacity = '0'; // Hide heading
+                        messageBox.style.display = 'block';
+                        heartsAnimation.style.opacity = '1'; // Trigger hearts animation
+                        gameContainer.classList.add('blur'); // Blur the game container
+                    }, 500);
+                    return;
                 }
-            });
+            }
 
-            if (!board.includes('') && !isGameOver) isGameOver = true;
+            if (!board.includes('')) {
+                isGameOver = true;
+                setTimeout(() => {
+                    gameHeading.style.opacity = '0'; // Hide heading
+                    messageBox.style.display = 'block';
+                    heartsAnimation.style.opacity = '1'; // Trigger hearts animation
+                    gameContainer.classList.add('blur'); // Blur the game container
+                }, 500);
+            }
         }
 
-        cells.forEach((cell, index) => {
-            cell.addEventListener('click', () => {
-                if (board[index] === '' && !isGameOver) {
-                    board[index] = 'X';
-                    cell.style.backgroundImage = `url('${playerImage}')`;
+        cells.forEach(cell => {
+            cell.addEventListener('click', (e) => {
+                const cellIndex = e.target.getAttribute('data-cell-index');
+                if (board[cellIndex] === '' && !isGameOver) {
+                    board[cellIndex] = 'X';
+                    e.target.style.backgroundImage = `url('${playerImage}')`;
                     checkWinner();
-                    if (!isGameOver) botMove();
+                    if (!isGameOver) {
+                        botMove();
+                    }
                 }
             });
         });
@@ -201,7 +247,9 @@
             board = ['', '', '', '', '', '', '', '', ''];
             cells.forEach(cell => cell.style.backgroundImage = '');
             isGameOver = false;
-            gameHeading.style.opacity = '1'; // Show the heading
+            gameHeading.style.opacity = '1'; // Show heading
+            heartsAnimation.style.opacity = '0'; // Hide hearts animation
+            gameContainer.classList.remove('blur'); // Remove blur
             messageBox.style.display = 'none';
             gameContainer.style.display = 'grid';
             giftBox.style.display = 'none';
@@ -213,3 +261,4 @@
     </script>
 </body>
 </html>
+
