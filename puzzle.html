@@ -15,7 +15,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .game-container {
@@ -83,58 +90,33 @@
             object-fit: cover;
         }
 
-        .hearts {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 99;
-            pointer-events: none;
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
-        .heart {
-            width: 20px;
-            height: 20px;
-            background: red;
-            position: absolute;
-            animation: floatUp 2s infinite;
-            border-radius: 50%;
-            transform: scale(1) rotate(45deg);
+        .button {
+            padding: 10px 15px;
+            font-size: 1rem;
+            background: #ff5e78;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .heart::before,
-        .heart::after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: red;
-            position: absolute;
-            border-radius: 50%;
+        .button:hover {
+            background: #ff324b;
         }
 
-        .heart::before {
-            top: -10px;
-            left: 0;
-        }
-
-        .heart::after {
-            top: 0;
-            left: 10px;
-        }
-
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1) rotate(45deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(0, -100px) scale(0.5) rotate(45deg);
-            }
+        .blur {
+            filter: blur(5px);
         }
     </style>
 </head>
 <body>
+    <h1>Let's Play... 🎮</h1>
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
         <div class="cell" data-cell-index="1"></div>
@@ -150,33 +132,85 @@
     <div id="gift-box"></div>
     <div id="message-box">
         <h2>Happy Birthday Winner! 🎉</h2>
-        <p>Message goes here...</p>
-        <button onclick="replay()">Replay</button>
+        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=pf0gfwsr&raw=1" alt="Her Picture">
+        <p>U know that u doesnt won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p>.<b/> ~ Ur love ❣</b></p>
+        <div class="buttons">
+            <button class="button" id="go-back">Go Back</button>
+            <button class="button" id="replay-button">Replay</button>
+        </div>
     </div>
-    <div class="hearts"></div>
 
     <script>
-        const hearts = document.querySelector('.hearts');
+        const cells = document.querySelectorAll('.cell');
+        const giftBox = document.getElementById('gift-box');
+        const messageBox = document.getElementById('message-box');
+        const goBackButton = document.getElementById('go-back');
+        const replayButton = document.getElementById('replay-button');
+        const gameContainer = document.getElementById('game-container');
 
-        function showHearts() {
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.style.left = Math.random() * 100 - 50 + '%';
-                heart.style.animationDelay = Math.random() * 2 + 's';
-                hearts.appendChild(heart);
+        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
+        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let isGameOver = false;
 
-                setTimeout(() => heart.remove(), 2000);
+        function botMove() {
+            if (!isGameOver) {
+                const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                board[randomIndex] = 'O';
+                cells[randomIndex].style.backgroundImage = `url('${botImage}')`;
+                checkWinner();
             }
         }
 
-        function replay() {
-            document.body.classList.remove('blur');
-            // Add more reset logic here if needed.
+        function checkWinner() {
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            winningCombos.forEach(([a, b, c]) => {
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    isGameOver = true;
+                    giftBox.style.display = 'block';
+                    giftBox.classList.add('animate');
+                    gameContainer.style.display = 'none'; // Hide the grid
+                }
+            });
+
+            if (!board.includes('') && !isGameOver) isGameOver = true;
         }
 
-        // Trigger hearts on winning
-        // Call `showHearts()` where necessary in your game logic.
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                if (board[index] === '' && !isGameOver) {
+                    board[index] = 'X';
+                    cell.style.backgroundImage = `url('${playerImage}')`;
+                    checkWinner();
+                    if (!isGameOver) botMove();
+                }
+            });
+        });
+
+        giftBox.addEventListener('click', () => {
+            messageBox.style.display = 'block';
+            giftBox.style.display = 'none';
+        });
+
+        replayButton.addEventListener('click', () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => cell.style.backgroundImage = '');
+            isGameOver = false;
+            messageBox.style.display = 'none';
+            gameContainer.style.display = 'grid';
+            giftBox.style.display = 'none';
+        });
+
+        goBackButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
     </script>
 </body>
 </html>
