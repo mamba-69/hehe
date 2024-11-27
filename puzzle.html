@@ -210,7 +210,8 @@
                 [0, 4, 8], [2, 4, 6]
             ];
 
-            winningCombos.forEach(([a, b, c]) => {
+            winningCombos.some(combination => {
+                const [a, b, c] = combination;
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
                     setTimeout(() => {
@@ -218,7 +219,9 @@
                         showFallingStars();
                         messageBox.style.display = 'block';
                     }, 500);
+                    return true;
                 }
+                return false;
             });
 
             if (!board.includes('') && !isGameOver) {
