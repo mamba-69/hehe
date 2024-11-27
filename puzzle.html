@@ -119,6 +119,8 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 1s;
+            width: 100%;
+            height: 100vh;
         }
 
         .falling-star {
@@ -211,11 +213,11 @@
             winningCombos.forEach(([a, b, c]) => {
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
-                    gameHeading.style.display = 'none';
-                    giftBox.style.display = 'block';
-                    giftBox.classList.add('animate');
-                    showFallingStars();
-                    messageBox.style.display = 'block';
+                    setTimeout(() => {
+                        giftBox.classList.add('animate');
+                        showFallingStars();
+                        messageBox.style.display = 'block';
+                    }, 500);
                 }
             });
 
@@ -268,4 +270,3 @@
     </script>
 </body>
 </html>
-
