@@ -234,7 +234,7 @@
 
     <div id="message-box">
         <img src="https://www.dropbox.com/scl/fi/2kpfl9c0wcb8ijzfdq29f/your-image.jpg?rlkey=5r9bxg6gnnlgz2civ5lqrlsfe&st=0cx0iwmr&raw=1" alt="Gift">
-        <p id="message">U know that u doesn't won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p id="message">Congratulations, you've won!</p>
         <div class="buttons">
             <button class="button" id="replay-btn">Replay</button>
             <button class="button" id="go-back-btn">Go Back</button>
@@ -247,13 +247,11 @@
         const messageBox = document.getElementById('message-box');
         const replayButton = document.getElementById('replay-btn');
         const goBackButton = document.getElementById('go-back-btn');
-        const heartsAnimation = document.querySelector('body');
         const gameHeading = document.getElementById('game-heading');
         let currentPlayer = 'X';
         let gameBoard = Array(9).fill(null);
         let gameOver = false;
 
-        // Winning combinations
         const winningCombinations = [
             [0, 1, 2],
             [3, 4, 5],
@@ -264,6 +262,8 @@
             [0, 4, 8],
             [2, 4, 6]
         ];
+
+        let heartsInterval;
 
         // Start hearts animation
         function startHearts() {
@@ -364,4 +364,3 @@
     </script>
 </body>
 </html>
-
