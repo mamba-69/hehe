@@ -12,19 +12,9 @@
             background: url('https://www.dropbox.com/scl/fi/m694qb7759nxa9bbeo11c/AdobeStock_880619685_Preview.jpeg?rlkey=5rlcaug70mkoshkgyypux1k2d&st=0cx0iwmr&raw=1') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        h1 {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3rem;
-            color: #ad3f7e; /* Dark pink */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .game-container {
@@ -33,11 +23,6 @@
             grid-template-rows: repeat(3, 100px);
             gap: 10px;
             z-index: 1;
-            position: relative;
-            margin-top: 80px;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
         }
 
         .cell {
@@ -63,7 +48,6 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             transition: transform 0.5s;
-            z-index: 10;
         }
 
         #gift-box.animate {
@@ -85,13 +69,14 @@
             width: 300px;
         }
 
-        #message-box img {
-            width: 100px;
-            height: 100px;
-            border-radius: 15px;
-            margin: 20px 0;
-            object-fit: cover;
-        }
+       #message-box img {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px; /* Adjust this value to get the desired curve */
+    margin: 20px 0;
+    object-fit: cover; /* Ensures the image doesn't distort */
+}
+
 
         #message-box p {
             margin: 20px 0;
@@ -121,102 +106,9 @@
         .button:hover {
             background: #ff324b;
         }
-
-        .back-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: #ff5e78;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .back-button:hover {
-            background: #ff324b;
-        }
-
-        .back-button::after {
-            content: '←';
-            font-size: 2rem;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Hearts Animation */
-        .heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: pink;
-            border-radius: 50%;
-            transform: rotate(45deg);
-            animation: fall 5s linear infinite, pop 2s ease-in-out infinite;
-        }
-
-        .heart::before, .heart::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: pink;
-            border-radius: 50%;
-        }
-
-        .heart::before {
-            top: -10px;
-            left: 0;
-        }
-
-        .heart::after {
-            left: -10px;
-            top: 0;
-        }
-
-        @keyframes fall {
-            from { top: -50px; opacity: 1; }
-            to { top: 100vh; opacity: 0; }
-        }
-
-        @keyframes pop {
-            0%, 100% { transform: scale(1) rotate(45deg); }
-            50% { transform: scale(1.2) rotate(45deg); }
-        }
-
-        /* Stars Animation */
-        .star {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: starfall 3s linear infinite;
-        }
-
-        @keyframes starfall {
-            0% {
-                top: -10px;
-                left: calc(100% * random());
-            }
-            100% {
-                top: 100vh;
-                left: calc(100% * random());
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
-    <h1 id="game-heading">Let's Play!</h1>
-    <button class="back-button" onclick="location.href='index.html'"></button>
 
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
@@ -233,134 +125,89 @@
     <div id="gift-box"></div>
 
     <div id="message-box">
-        <img src="https://www.dropbox.com/scl/fi/2kpfl9c0wcb8ijzfdq29f/your-image.jpg?rlkey=5r9bxg6gnnlgz2civ5lqrlsfe&st=0cx0iwmr&raw=1" alt="Gift">
-        <p id="message">Congratulations, you've won!</p>
+        <h2>Happy Birthday Winner! 🎉</h2>
+        <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=pf0gfwsr&raw=1" alt="Her Picture">
+        <p>U know that u doesnt won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p>.<b/> ~ Ur love ❣</b></p>
         <div class="buttons">
-            <button class="button" id="replay-btn">Replay</button>
-            <button class="button" id="go-back-btn">Go Back</button>
+            <button class="button" id="go-back">Go Back</button>
+            <button class="button" id="replay-button">Replay</button>
         </div>
     </div>
 
     <script>
-        const gameContainer = document.getElementById('game-container');
+        const cells = document.querySelectorAll('.cell');
         const giftBox = document.getElementById('gift-box');
         const messageBox = document.getElementById('message-box');
-        const replayButton = document.getElementById('replay-btn');
-        const goBackButton = document.getElementById('go-back-btn');
-        const gameHeading = document.getElementById('game-heading');
-        let currentPlayer = 'X';
-        let gameBoard = Array(9).fill(null);
-        let gameOver = false;
+        const goBackButton = document.getElementById('go-back');
+        const replayButton = document.getElementById('replay-button');
+        const gameContainer = document.getElementById('game-container');
 
-        const winningCombinations = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
+        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
+        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let isGameOver = false;
 
-        let heartsInterval;
-
-        // Start hearts animation
-        function startHearts() {
-            heartsInterval = setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 100);
+        function botMove() {
+            if (!isGameOver) {
+                const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                board[randomIndex] = 'O';
+                cells[randomIndex].style.backgroundImage = url('${botImage}');
+                checkWinner();
+            }
         }
 
-        // Stop hearts animation
-        function stopHearts() {
-            clearInterval(heartsInterval);
-        }
-
-        // Check winner
         function checkWinner() {
-            for (let combo of winningCombinations) {
-                const [a, b, c] = combo;
-                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-                    gameOver = true;
-                    setTimeout(() => {
-                        showGiftBox();
-                    }, 200);
-                    return gameBoard[a];
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            winningCombos.forEach(([a, b, c]) => {
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    isGameOver = true;
+                    giftBox.style.display = 'block';
+                    giftBox.classList.add('animate');
+                    gameContainer.style.display = 'none'; // Hide the grid
                 }
-            }
-            if (!gameBoard.includes(null)) {
-                gameOver = true;
-                setTimeout(() => {
-                    showGiftBox();
-                }, 200);
-                return 'Tie';
-            }
-            return null;
+            });
+
+            if (!board.includes('') && !isGameOver) isGameOver = true;
         }
 
-        // Show gift box animation and stop heart animation
-        function showGiftBox() {
-            giftBox.style.display = 'block';
-            giftBox.classList.add('animate');
-            stopHearts();
-            startStars();
-            gameHeading.style.display = 'none';
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                if (board[index] === '' && !isGameOver) {
+                    board[index] = 'X';
+                    cell.style.backgroundImage = url('${playerImage}');
+                    checkWinner();
+                    if (!isGameOver) botMove();
+                }
+            });
+        });
+
+        giftBox.addEventListener('click', () => {
             messageBox.style.display = 'block';
-        }
+            gameContainer.classList.add('blur');
+        });
 
-        // Show stars animation
-        function startStars() {
-            setInterval(() => {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                document.body.appendChild(star);
-                setTimeout(() => star.remove(), 3000);
-            }, 100);
-        }
+        goBackButton.addEventListener('click', () => {
+            messageBox.style.display = 'none';
+            gameContainer.style.display = 'grid'; // Show the grid again
+            gameContainer.classList.remove('blur');
+        });
 
-        // Restart game
-        function replayGame() {
+        replayButton.addEventListener('click', () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => (cell.style.backgroundImage = ''));
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
-            gameBoard = Array(9).fill(null);
-            currentPlayer = 'X';
-            gameOver = false;
-            gameHeading.style.display = 'block';
-            startHearts();
-            const cells = document.querySelectorAll('.cell');
-            cells.forEach(cell => cell.textContent = '');
-        }
-
-        // Handle cell click
-        gameContainer.addEventListener('click', (event) => {
-            if (gameOver) return;
-
-            const cellIndex = event.target.getAttribute('data-cell-index');
-            if (gameBoard[cellIndex] || !cellIndex) return;
-
-            gameBoard[cellIndex] = currentPlayer;
-            event.target.textContent = currentPlayer;
-
-            const winner = checkWinner();
-            if (winner) {
-                messageBox.querySelector('#message').textContent = winner === 'Tie' ? "It's a tie!" : `${winner} wins!`;
-            }
-
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            gameContainer.style.display = 'grid';
+            gameContainer.classList.remove('blur');
+            isGameOver = false;
         });
-
-        // Event listeners for replay and go back
-        replayButton.addEventListener('click', replayGame);
-        goBackButton.addEventListener('click', () => {
-            location.href = 'index.html';
-        });
-
-        // Start hearts animation on load
-        startHearts();
     </script>
 </body>
 </html>
