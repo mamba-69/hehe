@@ -193,12 +193,17 @@
         let board = ['', '', '', '', '', '', '', '', ''];
         let isGameOver = false;
 
+        // Player's Image URL (Make sure the URL is correct)
+        const playerImageUrl = 'https://www.dropbox.com/scl/fi/8xuonw3nywsu33d6e3ps9/logo2_png?rlkey=s9fyq3vo7rjmzuzj5hdtchcbj&raw=1';
+        // Bot's Image URL
+        const botImageUrl = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
+
         function botMove() {
             if (!isGameOver) {
                 const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
                 const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 board[randomIndex] = 'O';
-                cells[randomIndex].style.backgroundImage = `url('https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1')`;
+                cells[randomIndex].style.backgroundImage = `url('${botImageUrl}')`;
                 checkWinner();
             }
         }
@@ -247,7 +252,7 @@
             const index = e.target.dataset.cellIndex;
             if (board[index] === '' && !isGameOver) {
                 board[index] = 'X';
-                e.target.style.backgroundImage = `url('https://www.dropbox.com/scl/fi/8xuonw3nywsu33d6e3ps9/logo2_png?rlkey=s9fyq3vo7rjmzuzj5hdtchcbj&raw=1')`;
+                e.target.style.backgroundImage = `url('${playerImageUrl}')`; // Player's Image
                 checkWinner();
                 if (!isGameOver) botMove();
             }
