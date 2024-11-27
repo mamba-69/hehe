@@ -12,9 +12,19 @@
             background: url('https://www.dropbox.com/scl/fi/m694qb7759nxa9bbeo11c/AdobeStock_880619685_Preview.jpeg?rlkey=5rlcaug70mkoshkgyypux1k2d&st=0cx0iwmr&raw=1') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Header Text */
+        h1 {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: #ff4081; /* Bright pink for contrast */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            z-index: 2;
         }
 
         .game-container {
@@ -23,6 +33,8 @@
             grid-template-rows: repeat(3, 100px);
             gap: 10px;
             z-index: 1;
+            position: relative;
+            margin-top: 80px;
         }
 
         .cell {
@@ -69,14 +81,13 @@
             width: 300px;
         }
 
-       #message-box img {
-    width: 100px;
-    height: 100px;
-    border-radius: 15px; /* Adjust this value to get the desired curve */
-    margin: 20px 0;
-    object-fit: cover; /* Ensures the image doesn't distort */
-}
-
+        #message-box img {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            margin: 20px 0;
+            object-fit: cover;
+        }
 
         #message-box p {
             margin: 20px 0;
@@ -106,9 +117,93 @@
         .button:hover {
             background: #ff324b;
         }
+
+        /* Back Button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #ff5e78;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-button:hover {
+            background: #ff324b;
+        }
+
+        .back-button::after {
+            content: '←';
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Hearts Animation */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: pink;
+            border-radius: 50%;
+            transform: rotate(45deg);
+            animation: fall 5s linear infinite, pop 2s ease-in-out infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: pink;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -10px;
+            top: 0;
+        }
+
+        @keyframes fall {
+            from {
+                top: -50px;
+                opacity: 1;
+            }
+            to {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes pop {
+            0%, 100% {
+                transform: scale(1) rotate(45deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(45deg);
+            }
+        }
     </style>
 </head>
 <body>
+    <h1>Let's Play Mindu-Chokd!</h1>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="location.href='index.html'"></button>
 
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
@@ -136,6 +231,19 @@
     </div>
 
     <script>
+        // Falling Hearts Animation
+        function createHearts() {
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }
+        }
+        setInterval(createHearts, 1000);
+
         const cells = document.querySelectorAll('.cell');
         const giftBox = document.getElementById('gift-box');
         const messageBox = document.getElementById('message-box');
@@ -144,70 +252,96 @@
         const gameContainer = document.getElementById('game-container');
 
         const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
-        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
-        let board = ['', '', '', '', '', '', '', '', ''];
-        let isGameOver = false;
+        const botImage = 'https://www.dropbox.com/scl/fi/tznrxcscbx3az3n27hxjw/hackgif.png?rlkey=p95adfy9ayxp57gkbiztbyk7t&st=ulozfvts&raw=1';
 
-        function botMove() {
-            if (!isGameOver) {
-                const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
-                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                board[randomIndex] = 'O';
-                cells[randomIndex].style.backgroundImage = `url('${botImage}')`;
-                checkWinner();
-            }
-        }
-
-        function checkWinner() {
-            const winningCombos = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-
-            winningCombos.forEach(([a, b, c]) => {
-                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                    isGameOver = true;
-                    giftBox.style.display = 'block';
-                    giftBox.classList.add('animate');
-                    gameContainer.style.display = 'none'; // Hide the grid
-                }
+        function initGame() {
+            cells.forEach((cell, index) => {
+                cell.style.backgroundImage = '';
+                cell.addEventListener('click', () => makeMove(cell, index));
             });
-
-            if (!board.includes('') && !isGameOver) isGameOver = true;
-        }
-
-        cells.forEach((cell, index) => {
-            cell.addEventListener('click', () => {
-                if (board[index] === '' && !isGameOver) {
-                    board[index] = 'X';
-                    cell.style.backgroundImage = `url('${playerImage}')`;
-                    checkWinner();
-                    if (!isGameOver) botMove();
-                }
-            });
-        });
-
-        giftBox.addEventListener('click', () => {
-            messageBox.style.display = 'block';
-            gameContainer.classList.add('blur');
-        });
-
-        goBackButton.addEventListener('click', () => {
-            messageBox.style.display = 'none';
-            gameContainer.style.display = 'grid'; // Show the grid again
-            gameContainer.classList.remove('blur');
-        });
-
-        replayButton.addEventListener('click', () => {
-            board = ['', '', '', '', '', '', '', '', ''];
-            cells.forEach(cell => (cell.style.backgroundImage = ''));
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
-            gameContainer.style.display = 'grid';
             gameContainer.classList.remove('blur');
-            isGameOver = false;
-        });
+        }
+
+        // Logic: Fill moves n is
+               function makeMove(cell, index) {
+            if (cell.style.backgroundImage) return; // Ignore if cell is already filled
+
+            // Player move
+            cell.style.backgroundImage = `url(${playerImage})`;
+
+            // Check if the player has won
+            if (checkWin(playerImage)) {
+                triggerWinSequence();
+                return;
+            }
+
+            // Bot's move (random empty cell)
+            setTimeout(() => {
+                const emptyCells = [...cells].filter(cell => !cell.style.backgroundImage);
+                if (emptyCells.length === 0) return; // No more moves
+
+                const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                randomCell.style.backgroundImage = `url(${botImage})`;
+
+                // Check if bot has won
+                if (checkWin(botImage)) {
+                    alert("Bot won! Try again.");
+                    initGame();
+                }
+            }, 500);
+        }
+
+        function checkWin(imageUrl) {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6]            // Diagonals
+            ];
+
+            return winPatterns.some(pattern =>
+                pattern.every(index => 
+                    cells[index].style.backgroundImage.includes(imageUrl)
+                )
+            );
+        }
+
+        function triggerWinSequence() {
+            // Blur the game board
+            gameContainer.classList.add('blur');
+
+            // Show gift box with animation
+            giftBox.style.display = 'block';
+            setTimeout(() => giftBox.classList.add('animate'), 1000);
+
+            // Add click handler to reveal the message
+            giftBox.addEventListener('click', () => {
+                giftBox.style.display = 'none';
+                giftBox.classList.remove('animate');
+                showMessageBox();
+            });
+        }
+
+        function showMessageBox() {
+            messageBox.style.display = 'block';
+
+            // Go back button functionality
+            goBackButton.addEventListener('click', () => {
+                messageBox.style.display = 'none';
+                gameContainer.classList.remove('blur');
+                initGame();
+            });
+
+            // Replay button functionality
+            replayButton.addEventListener('click', () => {
+                messageBox.style.display = 'none';
+                initGame();
+            });
+        }
+
+        // Initialize the game on page load
+        initGame();
     </script>
 </body>
 </html>
