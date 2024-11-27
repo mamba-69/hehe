@@ -13,6 +13,7 @@
             background-size: cover;
             height: 100vh;
             overflow: hidden;
+            position: relative;
         }
 
         h1 {
@@ -34,6 +35,9 @@
             z-index: 1;
             position: relative;
             margin-top: 80px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
         .cell {
@@ -59,6 +63,7 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             transition: transform 0.5s;
+            z-index: 10;
         }
 
         #gift-box.animate {
@@ -117,7 +122,6 @@
             background: #ff324b;
         }
 
-        /* Back Button */
         .back-button {
             position: absolute;
             top: 20px;
@@ -230,7 +234,7 @@
 
     <div id="message-box">
         <img src="https://www.dropbox.com/scl/fi/2kpfl9c0wcb8ijzfdq29f/your-image.jpg?rlkey=5r9bxg6gnnlgz2civ5lqrlsfe&st=0cx0iwmr&raw=1" alt="Gift">
-        <p>U know that u doesn't won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p id="message">U know that u doesn't won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
         <div class="buttons">
             <button class="button" id="replay-btn">Replay</button>
             <button class="button" id="go-back-btn">Go Back</button>
@@ -245,24 +249,70 @@
         const goBackButton = document.getElementById('go-back-btn');
         const heartsAnimation = document.querySelector('body');
         const gameHeading = document.getElementById('game-heading');
-        let heartsInterval;
+        let currentPlayer = 'X';
+        let gameBoard = Array(9).fill(null);
+        let gameOver = false;
 
-        // Function to generate hearts
+        // Winning combinations
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Start hearts animation
         function startHearts() {
             heartsInterval = setInterval(() => {
                 const heart = document.createElement('div');
                 heart.classList.add('heart');
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
-            }, 300);
+            }, 100);
         }
 
-        // Function to stop hearts animation
+        // Stop hearts animation
         function stopHearts() {
             clearInterval(heartsInterval);
         }
 
-        // Function to generate stars
+        // Check winner
+        function checkWinner() {
+            for (let combo of winningCombinations) {
+                const [a, b, c] = combo;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    gameOver = true;
+                    setTimeout(() => {
+                        showGiftBox();
+                    }, 200);
+                    return gameBoard[a];
+                }
+            }
+            if (!gameBoard.includes(null)) {
+                gameOver = true;
+                setTimeout(() => {
+                    showGiftBox();
+                }, 200);
+                return 'Tie';
+            }
+            return null;
+        }
+
+        // Show gift box animation and stop heart animation
+        function showGiftBox() {
+            giftBox.style.display = 'block';
+            giftBox.classList.add('animate');
+            stopHearts();
+            startStars();
+            gameHeading.style.display = 'none';
+            messageBox.style.display = 'block';
+        }
+
+        // Show stars animation
         function startStars() {
             setInterval(() => {
                 const star = document.createElement('div');
@@ -272,24 +322,38 @@
             }, 100);
         }
 
-        // Function to handle gift box click
-        function showGiftBox() {
-            giftBox.style.display = 'block';
-            giftBox.classList.add('animate');
-            stopHearts();
-            startStars();
-            gameHeading.style.display = 'none';
-        }
-
-        // Function to handle replay
+        // Restart game
         function replayGame() {
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
-            startHearts();
+            gameBoard = Array(9).fill(null);
+            currentPlayer = 'X';
+            gameOver = false;
             gameHeading.style.display = 'block';
+            startHearts();
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => cell.textContent = '');
         }
 
-        // Replay and back functionality
+        // Handle cell click
+        gameContainer.addEventListener('click', (event) => {
+            if (gameOver) return;
+
+            const cellIndex = event.target.getAttribute('data-cell-index');
+            if (gameBoard[cellIndex] || !cellIndex) return;
+
+            gameBoard[cellIndex] = currentPlayer;
+            event.target.textContent = currentPlayer;
+
+            const winner = checkWinner();
+            if (winner) {
+                messageBox.querySelector('#message').textContent = winner === 'Tie' ? "It's a tie!" : `${winner} wins!`;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        });
+
+        // Event listeners for replay and go back
         replayButton.addEventListener('click', replayGame);
         goBackButton.addEventListener('click', () => {
             location.href = 'index.html';
@@ -297,15 +361,7 @@
 
         // Start hearts animation on load
         startHearts();
-
-        // Handle game start
-        gameContainer.addEventListener('click', (event) => {
-            if (event.target.classList.contains('cell')) {
-                // Simulate game move, you can adjust this for your game logic
-                showGiftBox();
-            }
-        });
-
     </script>
 </body>
 </html>
+
