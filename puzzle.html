@@ -126,14 +126,12 @@
             pointer-events: none;
             z-index: 200;
             opacity: 0;
-            animation: fall 3s infinite;
         }
 
         /* Define the stars animation */
         @keyframes fall {
             0% { transform: translateY(-100%); opacity: 1; }
-            50% { opacity: 1; }
-            100% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(100vh); opacity: 0; }
         }
 
         .star {
@@ -144,7 +142,8 @@
             height: 10px;
             background-color: white;
             border-radius: 50%;
-            animation: star-fall 2s infinite;
+            opacity: 0.8;
+            animation: star-fall 4s linear infinite;
         }
 
         /* Animation for the stars */
@@ -230,14 +229,12 @@
                 [2, 4, 6]
             ];
 
-            let isGameOver = false;
-
             winningCombinations.forEach(combo => {
                 const [a, b, c] = combo;
                 if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
                     setTimeout(() => {
-                        giftBox.style.display = 'block'; // Display the gift box after the win
+                        giftBox.style.display = 'block';
                         giftBox.classList.add('animate');
                         gameContainer.style.display = 'none';
                         heading.style.display = 'none';
@@ -252,21 +249,24 @@
         }
 
         function showFallingStars() {
-            // Create falling stars
+            // Clear old stars
+            fallingStarsContainer.innerHTML = '';
+
             for (let i = 0; i < 20; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
-                star.style.left = `${Math.random() * 100}vw`;
+                star.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+                star.style.animationDuration = `${Math.random() * 3 + 3}s`; // Random speed between 3s and 6s
                 fallingStarsContainer.appendChild(star);
             }
 
             fallingStarsContainer.style.opacity = 1;
-            setTimeout(() => fallingStarsContainer.style.opacity = 0, 3000); // Hide stars after 3 seconds
+            setTimeout(() => fallingStarsContainer.style.opacity = 0, 3000);
         }
 
         giftBox.addEventListener('click', () => {
             giftBox.style.display = 'none';
-            showFallingStars(); // Show stars animation
+            showFallingStars();
             messageBox.style.display = 'block';
         });
 
@@ -283,7 +283,7 @@
             cells.forEach(cell => (cell.style.backgroundImage = ''));
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
-            fallingStarsContainer.innerHTML = ''; // Remove old stars
+            fallingStarsContainer.innerHTML = '';
             gameContainer.style.display = 'grid';
             heading.style.display = 'block';
             isGameOver = false;
