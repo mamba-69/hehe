@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: url('https://www.dropbox.com/scl/fi/m694qb7759nxa9bbeo11c/AdobeStock_880619685_Preview.jpeg?rlkey=5rlcaug70mkoshkgyypux1k2d&st=0cx0iwmr&raw=1') no-repeat center center fixed;
+            background: url('https://www.dropbox.com/scl/fi/n81t19asbm9xjnmsexlmm/360_F_857563160_aOeFIXax6BW7ls7BmhKaoosdnob3TswP.jpg?rlkey=t5qoa4qo56v8xpa679oum46sj&st=e2c6hv9d&raw=1') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
             display: flex;
@@ -140,7 +140,7 @@
             left: 50%;
             width: 10px;
             height: 10px;
-            background-color: white;
+            background-color: yellow; /* Changed color to yellow */
             border-radius: 50%;
             opacity: 0.8;
             animation: star-fall 4s linear infinite;
@@ -206,6 +206,7 @@
         const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
         let board = ['', '', '', '', '', '', '', '', ''];
         let isGameOver = false;
+        let starsInterval;
 
         function botMove() {
             if (!isGameOver) {
@@ -252,16 +253,15 @@
             // Clear old stars
             fallingStarsContainer.innerHTML = '';
 
-            for (let i = 0; i < 20; i++) {
+            starsInterval = setInterval(() => {
                 const star = document.createElement('div');
                 star.classList.add('star');
                 star.style.left = `${Math.random() * 100}vw`; // Random horizontal position
                 star.style.animationDuration = `${Math.random() * 3 + 3}s`; // Random speed between 3s and 6s
                 fallingStarsContainer.appendChild(star);
-            }
+            }, 100); // Add stars every 100ms
 
             fallingStarsContainer.style.opacity = 1;
-            setTimeout(() => fallingStarsContainer.style.opacity = 0, 3000);
         }
 
         giftBox.addEventListener('click', () => {
@@ -272,10 +272,12 @@
 
         goBackButton.addEventListener('click', () => {
             window.location.href = 'index.html';
+            clearInterval(starsInterval); // Stop stars when go back
         });
 
         replayButton.addEventListener('click', () => {
             restartGame();
+            clearInterval(starsInterval); // Stop stars when replay
         });
 
         function restartGame() {
