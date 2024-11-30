@@ -207,8 +207,9 @@
                 [0, 4, 8], [2, 4, 6]
             ];
 
-            winningCombos.forEach(([a, b, c]) => {
-                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            winningCombos.forEach(combo => {
+                const [a, b, c] = combo;
+                if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
                     setTimeout(() => {
                         giftBox.classList.add('animate');
