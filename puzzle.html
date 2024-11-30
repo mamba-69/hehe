@@ -16,14 +16,13 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            overflow: hidden;
         }
 
-        h1 {
-            color: white;
+        #heading {
             font-size: 2rem;
+            text-align: center;
+            color: #ff69b4; /* Light pink color */
             margin-bottom: 20px;
-            z-index: 1;
         }
 
         .game-container {
@@ -91,6 +90,10 @@
             font-size: 1rem;
         }
 
+        .blur {
+            filter: blur(5px);
+        }
+
         .buttons {
             display: flex;
             justify-content: space-between;
@@ -111,47 +114,32 @@
             background: #ff324b;
         }
 
-        .falling-stars {
-            position: absolute;
+        .hidden {
+            display: none;
+        }
+
+        #falling-stars {
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 50;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 1s;
             width: 100%;
-            height: 100vh;
+            height: 100%;
+            pointer-events: none;
+            z-index: 200;
+            opacity: 0;
+            animation: fall 3s infinite;
         }
 
-        .falling-star {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: yellow;
-            border-radius: 50%;
-            animation: falling 3s infinite linear;
+        @keyframes fall {
+            0% { transform: translateY(-100%); opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
         }
 
-        @keyframes falling {
-            0% { transform: translateY(-50px); }
-            100% { transform: translateY(100vh); }
-        }
-
-        .restart-btn {
-            display: none;
-            padding: 10px 15px;
-            background: #4CAF50;
-            color: white;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
-    <h1 id="game-heading">Let's Play Mindu-Chokdi</h1>
+    <h1 id="heading">Let's Play Mindu-Chokdi</h1>
 
     <div class="game-container" id="game-container">
         <div class="cell" data-cell-index="0"></div>
@@ -170,120 +158,110 @@
     <div id="message-box">
         <h2>Happy Birthday Winner! 🎉</h2>
         <img src="https://www.dropbox.com/scl/fi/8e51kx6zpdeytgjgbv1bs/466923020_1771527170328879_5652033378894793357_n.jpg?rlkey=8ybs01hcj9cns9a2x7m8tb65f&st=pf0gfwsr&raw=1" alt="Her Picture">
-        <p>U know that u doesnt won only this game, literally u won my whole life by making the garden full of love and joy, Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
-        <p>.<b/> ~ Ur love ❣</b></p>
+        <p>U know that u doesn't just win this game, you literally won my whole life by filling it with love and joy. Once again <i><b>Happiestttt BDAY To You My Fulltime Wifeyyyy.</b></i></p>
+        <p>~ Ur love ❣</p>
         <div class="buttons">
             <button class="button" id="go-back">Go Back</button>
             <button class="button" id="replay-button">Replay</button>
         </div>
     </div>
 
-    <div class="falling-stars" id="falling-stars"></div>
-
-    <button class="restart-btn" id="restart-btn">Restart</button>
+    <div id="falling-stars"></div>
 
     <script>
         const cells = document.querySelectorAll('.cell');
         const giftBox = document.getElementById('gift-box');
         const messageBox = document.getElementById('message-box');
+        const goBackButton = document.getElementById('go-back');
+        const replayButton = document.getElementById('replay-button');
         const gameContainer = document.getElementById('game-container');
+        const heading = document.getElementById('heading');
         const fallingStars = document.getElementById('falling-stars');
-        const restartButton = document.getElementById('restart-btn');
-        const gameHeading = document.getElementById('game-heading');
+
+        const playerImage = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=ax4nvaeh&raw=1';
+        const botImage = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
         let board = ['', '', '', '', '', '', '', '', ''];
         let isGameOver = false;
-
-        // Player's Image URL (Make sure the URL is correct)
-        const playerImageUrl = 'https://www.dropbox.com/scl/fi/w80nvznv952rurdkp1dq4/bruhhjj.png?rlkey=w3jbsayx2rs75oxi6guzmo393&st=6aum5dzs&raw=1';
-        // Bot's Image URL
-        const botImageUrl = 'https://www.dropbox.com/scl/fi/x4lp5hi9r695a7dhe6fzs/ea163885-66c5-4e73-b32e-77e54572d76b.png?rlkey=4vu0zl5wagkabujp89zyp0qpx&st=9q5wtft6&raw=1';
 
         function botMove() {
             if (!isGameOver) {
                 const emptyCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
                 const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 board[randomIndex] = 'O';
-                cells[randomIndex].style.backgroundImage = `url('${botImageUrl}')`;
+                cells[randomIndex].style.backgroundImage = `url(${botImage})`;
                 checkWinner();
             }
         }
 
-function checkWinner() {
-    const winningCombos = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]
-    ];
+        function checkWinner() {
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
 
-    winningCombos.some(combination => {
-        const [a, b, c] = combination;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            isGameOver = true;
-            setTimeout(() => {
-                giftBox.style.display = 'block'; // Show gift box
-                giftBox.classList.add('animate'); // Add animation
-            }, 500);
-            return true;
-        }
-        return false;
-    });
+            winningCombos.forEach(([a, b, c]) => {
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    isGameOver = true;
+                    setTimeout(() => {
+                        giftBox.style.display = 'block';
+                        giftBox.classList.add('animate');
+                        gameContainer.style.display = 'none'; // Hide game
+                        heading.style.display = 'none'; // Hide heading
+                    }, 500);
+                }
+            });
 
-    // If the game is a tie
-    if (!board.includes('') && !isGameOver) {
-        isGameOver = true;
-        restartButton.style.display = 'inline-block'; // Show restart button
-    }
-}
-
-// Add event listener for the gift box
-giftBox.addEventListener('click', () => {
-    giftBox.style.display = 'none'; // Hide the gift box
-    showFallingStars(); // Trigger the stars animation
-    messageBox.style.display = 'block'; // Show the message box
-});
-
-// Function to show stars animation
-function showFallingStars() {
-    fallingStars.style.opacity = 1;
-    fallingStars.innerHTML = ''; // Clear existing stars
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.classList.add('falling-star');
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.animationDuration = `${Math.random() * 2 + 2}s`;
-        star.style.animationDelay = `${Math.random() * 2}s`;
-        fallingStars.appendChild(star);
-    }
-}
-
-
-        function handleCellClick(e) {
-            const index = e.target.dataset.cellIndex;
-            if (board[index] === '' && !isGameOver) {
-                board[index] = 'X';
-                e.target.style.backgroundImage = `url('${playerImageUrl}')`; // Player's Image
-                checkWinner();
-                if (!isGameOver) botMove();
+            if (!board.includes('') && !isGameOver) {
+                isGameOver = true;
+                restartButton.style.display = 'inline-block'; // Show restart button
+                gameContainer.style.display = 'none';
+                heading.style.display = 'none';
             }
         }
 
-        function resetGame() {
-            board = ['', '', '', '', '', '', '', '', ''];
-            isGameOver = false;
-            cells.forEach(cell => cell.style.backgroundImage = '');
-            gameContainer.style.display = 'grid';
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const cellIndex = cell.getAttribute('data-cell-index');
+                if (board[cellIndex] === '' && !isGameOver) {
+                    board[cellIndex] = 'X';
+                    cell.style.backgroundImage = `url(${playerImage})`;
+                    checkWinner();
+                    if (!isGameOver) {
+                        botMove();
+                    }
+                }
+            });
+        });
+
+        giftBox.addEventListener('click', () => {
             giftBox.style.display = 'none';
-            fallingStars.innerHTML = '';
-            fallingStars.style.opacity = 0;
-            restartButton.style.display = 'none';
-            gameHeading.style.display = 'block';
-            messageBox.style.display = 'none';
+            showFallingStars();
+            messageBox.style.display = 'block';
+        });
+
+        function showFallingStars() {
+            fallingStars.style.opacity = 1;
+            setTimeout(() => {
+                fallingStars.style.opacity = 0;
+            }, 3000);
         }
 
-        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-        document.getElementById('go-back').addEventListener('click', () => window.location.href = 'index.html');
-        document.getElementById('replay-button').addEventListener('click', resetGame);
-        restartButton.addEventListener('click', resetGame);
+        replayButton.addEventListener('click', () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => cell.style.backgroundImage = '');
+            giftBox.style.display = 'none';
+            messageBox.style.display = 'none';
+            fallingStars.style.opacity = 0;
+            gameContainer.style.display = 'grid';
+            heading.style.display = 'block';
+            isGameOver = false;
+        });
+
+        goBackButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
     </script>
+
 </body>
 </html>
