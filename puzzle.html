@@ -166,7 +166,14 @@
         </div>
     </div>
 
-    <div id="falling-stars"></div>
+    <div id="falling-stars">
+        <!-- Add falling star elements here -->
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
 
     <script>
         const cells = document.querySelectorAll('.cell');
@@ -204,35 +211,25 @@
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
                     setTimeout(() => {
-                        giftBox.style.display = 'block';
                         giftBox.classList.add('animate');
-                        gameContainer.style.display = 'none'; // Hide game
-                        heading.style.display = 'none'; // Hide heading
+                        gameContainer.style.display = 'none';
+                        heading.style.display = 'none';
+                        showFallingStars();
+                        messageBox.style.display = 'block';
                     }, 500);
                 }
             });
 
             if (!board.includes('') && !isGameOver) {
-                isGameOver = true;
-                restartButton.style.display = 'inline-block'; // Show restart button
-                gameContainer.style.display = 'none';
-                heading.style.display = 'none';
+                alert("It's a tie!");
+                restartGame();
             }
         }
 
-        cells.forEach(cell => {
-            cell.addEventListener('click', () => {
-                const cellIndex = cell.getAttribute('data-cell-index');
-                if (board[cellIndex] === '' && !isGameOver) {
-                    board[cellIndex] = 'X';
-                    cell.style.backgroundImage = `url(${playerImage})`;
-                    checkWinner();
-                    if (!isGameOver) {
-                        botMove();
-                    }
-                }
-            });
-        });
+        function showFallingStars() {
+            fallingStars.style.opacity = 1;
+            setTimeout(() => fallingStars.style.opacity = 0, 3000);
+        }
 
         giftBox.addEventListener('click', () => {
             giftBox.style.display = 'none';
@@ -240,26 +237,35 @@
             messageBox.style.display = 'block';
         });
 
-        function showFallingStars() {
-            fallingStars.style.opacity = 1;
-            setTimeout(() => {
-                fallingStars.style.opacity = 0;
-            }, 3000);
-        }
+        goBackButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
 
         replayButton.addEventListener('click', () => {
+            restartGame();
+        });
+
+        function restartGame() {
             board = ['', '', '', '', '', '', '', '', ''];
-            cells.forEach(cell => cell.style.backgroundImage = '');
+            cells.forEach(cell => (cell.style.backgroundImage = ''));
             giftBox.style.display = 'none';
             messageBox.style.display = 'none';
             fallingStars.style.opacity = 0;
             gameContainer.style.display = 'grid';
             heading.style.display = 'block';
             isGameOver = false;
-        });
+        }
 
-        goBackButton.addEventListener('click', () => {
-            window.location.href = 'index.html';
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = cell.dataset.cellIndex;
+                if (board[index] === '' && !isGameOver) {
+                    board[index] = 'X';
+                    cell.style.backgroundImage = `url(${playerImage})`;
+                    checkWinner();
+                    if (!isGameOver) botMove();
+                }
+            });
         });
     </script>
 
