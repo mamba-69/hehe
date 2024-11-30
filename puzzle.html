@@ -208,45 +208,54 @@
             }
         }
 
-        function checkWinner() {
-            const winningCombos = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
+function checkWinner() {
+    const winningCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
 
-            winningCombos.some(combination => {
-                const [a, b, c] = combination;
-                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                    isGameOver = true;
-                    setTimeout(() => {
-                        giftBox.classList.add('animate');
-                        showFallingStars();
-                        messageBox.style.display = 'block';
-                    }, 500);
-                    return true;
-                }
-                return false;
-            });
-
-            if (!board.includes('') && !isGameOver) {
-                restartButton.style.display = 'inline-block';
-            }
-        }
-
-        function showFallingStars() {
+    winningCombos.some(combination => {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            isGameOver = true;
             setTimeout(() => {
-                fallingStars.style.opacity = 1;
-                for (let i = 0; i < 50; i++) {
-                    const star = document.createElement('div');
-                    star.classList.add('falling-star');
-                    star.style.left = `${Math.random() * 100}%`;
-                    star.style.animationDuration = `${Math.random() * 2 + 2}s`;
-                    star.style.animationDelay = `${Math.random() * 2}s`;
-                    fallingStars.appendChild(star);
-                }
+                giftBox.style.display = 'block'; // Show gift box
+                giftBox.classList.add('animate'); // Add animation
             }, 500);
+            return true;
         }
+        return false;
+    });
+
+    // If the game is a tie
+    if (!board.includes('') && !isGameOver) {
+        isGameOver = true;
+        restartButton.style.display = 'inline-block'; // Show restart button
+    }
+}
+
+// Add event listener for the gift box
+giftBox.addEventListener('click', () => {
+    giftBox.style.display = 'none'; // Hide the gift box
+    showFallingStars(); // Trigger the stars animation
+    messageBox.style.display = 'block'; // Show the message box
+});
+
+// Function to show stars animation
+function showFallingStars() {
+    fallingStars.style.opacity = 1;
+    fallingStars.innerHTML = ''; // Clear existing stars
+    for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.classList.add('falling-star');
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        fallingStars.appendChild(star);
+    }
+}
+
 
         function handleCellClick(e) {
             const index = e.target.dataset.cellIndex;
