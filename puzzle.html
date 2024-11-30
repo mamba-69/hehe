@@ -21,7 +21,7 @@
         #heading {
             font-size: 2rem;
             text-align: center;
-            color: #ff69b4; /* Light pink color */
+            color: #ff69b4;
             margin-bottom: 20px;
         }
 
@@ -30,7 +30,6 @@
             grid-template-columns: repeat(3, 100px);
             grid-template-rows: repeat(3, 100px);
             gap: 10px;
-            z-index: 1;
         }
 
         .cell {
@@ -212,11 +211,10 @@
                 if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
                     isGameOver = true;
                     setTimeout(() => {
+                        giftBox.style.display = 'block'; // Display the gift box after the win
                         giftBox.classList.add('animate');
                         gameContainer.style.display = 'none';
                         heading.style.display = 'none';
-                        showFallingStars();
-                        messageBox.style.display = 'block';
                     }, 500);
                 }
             });
@@ -234,7 +232,7 @@
 
         giftBox.addEventListener('click', () => {
             giftBox.style.display = 'none';
-            showFallingStars();
+            showFallingStars(); // Show stars animation
             messageBox.style.display = 'block';
         });
 
@@ -269,6 +267,5 @@
             });
         });
     </script>
-
 </body>
 </html>
